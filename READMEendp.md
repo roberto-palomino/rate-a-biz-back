@@ -2,30 +2,42 @@
 
 -   Se trata de una web donde los usuarios valoran empresas y hacen comentarios.
 
--   Cada entrada puede ser votada con una puntuación entre 1 y 5.
+-   Cada entrada puede ser votada con una puntuación entre 1 y 5 distintos campos.
+
+## Endpoints comunes
+
+-   POST - [/signup] - Crea un usuario pendiente de activar. (Enviar en el body el accountType)
+-   POST - [/login] - Logea a un usuario retornando un token.
+-   GET - [/validate/:registrationCode] - Valida un usuario recién registrado.
+-   PUT - [/password/recover] - Envia un correo con el código de reseteo de contraseña a un email.
+-   PUT - [/password/reset] - Cambia la contraseña de un usuario con un código de reseteo.
 
 ## Endpoints del usuario
 
--   POST - [/signup] - Crea un usuario pendiente de activar.
--   POST - [/login] - Logea a un usuario retornando un token.
--   GET - [/users/validate/:registrationCode] - Valida un usuario recién registrado.
--   DELETE - [/users/:idUser] - Borra un usuario.
-
 -   GET - [/users/:idUser] - Retorna información de un usuario concreto.
-
--   PUT - [/users/:idUser] - Edita el nombre o el email de un usuario.
+-   PUT - [/users/:idUser] - Editar perfil de usuario
 -   PUT - [/users/:idUser/avatar] - Edita el avatar de un usuario.
 -   PUT - [/users/:idUser/password] - Edita la contraseña de un usuario.
--   PUT - [/users/password/recover] - Envia un correo con el código de reseteo de contraseña a un email.
--   PUT - [/users/password/reset] - Cambia la contraseña de un usuario con un código de reseteo.
+-   DELETE - [/users/:idUser] - Borra un usuario.
 
-## Endpoints del diario
+## Endpoints de la empresa
 
--   GET - [/entries] - Retorna el listado de entradas. ✅
--   GET - [/entries/:idEntry] - Retorna una entrada en concreto. ✅
--   POST - [/entries] - Crea una entrada. ✅
--   POST - [/entries/:idEntry/photos] - Añade una imagen a una entrada. ✅
--   POST - [/entries/:idEntry/votes] - Vota una entrada. ✅
--   PUT - [/entries/:idEntry] - Edita la descripción o el título de una entrada. ✅
--   DELETE - [/entries/:idEntry] - Borra una entrada. ✅
--   DELETE - [/entries/:idEntry/photos/:idPhoto] - Elimina una foto de una entrada. ✅
+-   GET - [/business] - Retorna información de las empresas
+-   GET - [/business/idBusiness] - Retorna información de una empresa en concreto.
+-   PUT - [/business/:idBusiness] - Editar perfil de empresa
+-   PUT - [/business/:idBusiness/avatar] - Edita el avatar de una empresa.
+-   PUT - [/business/:idBusiness/password] - Edita la contraseña de una empresa.
+-   DELETE - [/business/idBusiness] - Borra una empresa
+
+## Endpoints de comment
+
+-   GET - [/comments/:idBusiness] - Retorna los comentarios de una empresa en concreto
+-   GET - [/comments/:idUser] - Retorna los comentarios de un usuario
+-   POST - [/comments/:idBusiness] - Crea un comentario
+-   PUT - [/comments/:idBusiness/:idComment] - Edita la descripción o el título de un comentario.
+-   DELETE - [/comments/:idBusiness/:idComment] - Borra un comentario.
+
+## Endpoints de votes
+
+-   POST - [/votes/:idBusiness] - Vota una empresa.
+-   PUT - [/votes/:idBusiness/:idVote] - Edita el voto durante 24 horas (comparar createdAt con fecha actual)

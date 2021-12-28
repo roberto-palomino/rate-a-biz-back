@@ -18,7 +18,7 @@ const getDB = async () => {
             user: MYSQL_USER,
             password: MYSQL_PASSWORD,
             database: MYSQL_DATABASE,
-            timezone: 'z',
+            timezone: 'Z',
         });
 
         /* Retornamos una conexión libre */

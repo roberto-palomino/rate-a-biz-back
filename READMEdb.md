@@ -20,9 +20,11 @@ username VARCHAR(50),
 avatar VARCHAR(50),
 active BOOLEAN DEFAULT false,
 deleted BOOLEAN DEFAULT false,
-role ENUM("admin", "normal") DEFAULT "normal" NOT NULL,
 registrationCode VARCHAR(100),
 recoverCode VARCHAR(100),
+place VARCHAR(75) NOT NULL,
+sector VARCHAR(50) NOT NULL,
+jobs ENUM("Informatica","Administrativo","Legal","Comercio"),
 createdAt DATETIME NOT NULL,
 modifiedAt DATETIME
 );
@@ -34,7 +36,7 @@ createdAt DATETIME NOT NULL,
 modifiedAt DATETIME,
 salary INT,
 enviroment INT,
-carreer INT,
+conciliation INT,
 oportunitys INT  
  );
 CREATE TABLE comments (
