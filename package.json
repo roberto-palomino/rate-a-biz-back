@@ -3,7 +3,8 @@
     "version": "1.0.0",
     "main": "index.js",
     "scripts": {
-        "initDB": "node database/initDB.js"
+        "initDB": "node database/initDB.js",
+        "dev": "nodemon server.js"
     },
     "keywords": [],
     "author": "",
