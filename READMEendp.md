@@ -6,7 +6,7 @@
 
 ## Endpoints comunes
 
--   POST - [/signup] - Crea un usuario pendiente de activar. (Enviar en el body el accountType)
+-   POST - [/signup] - Crea un usuario pendiente de activar. (Enviar en el body el accountType) ✅
 -   POST - [/login] - Logea a un usuario retornando un token.
 -   GET - [/validate/:registrationCode] - Valida un usuario recién registrado.
 -   PUT - [/password/recover] - Envia un correo con el código de reseteo de contraseña a un email.
@@ -41,3 +41,6 @@
 
 -   POST - [/votes/:idBusiness] - Vota una empresa.
 -   PUT - [/votes/:idBusiness/:idVote] - Edita el voto durante 24 horas (comparar createdAt con fecha actual)
+
+SENDGRID_API_KEY=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
+SENDGRID_FROM=rateabiz@hotmail.com

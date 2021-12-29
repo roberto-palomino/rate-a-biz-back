@@ -1,30 +1,29 @@
-const getDB = require('../../database/getDB');
-const { generateRandomString, sendMail } = require('../../helpers');
 const bcrypt = require('bcrypt');
+const { generateRandomString, sendMail } = require('../../helpers');
+const getDb = require('../../database/getDB');
 const { PUBLIC_HOST } = process.env;
 
 const signUp = async (req, res, next) => {
     let connection;
-    try {
-        connection = await getDB();
 
+    try {
+        connection = await getDb();
+
+        /* Obtenemos los campos necesarios del body */
         const { email, password, role } = req.body;
 
+        /* Si falta algun campo lanzamos un error */
         if (!email || !password || !role) {
             const error = new Error('Faltan campos');
             error.httpStatus = 400;
             throw error;
         }
-
-        /* Generamos un codigo de un solo uso */
+        /* Generamos un codigo de registro de un solo uso */
         const registrationCode = generateRandomString(40);
-
         /* Hasheamos la contraseña */
         const hashedPassword = await bcrypt.hash(password, 10);
-
-        /* Guardamos el usuario en la base de datos según sea usuario o empresa */
+        /* Guardamos el usuario en la base de datos según sea empresa o usuario*/
         if (role === 'business') {
-            console.log(connection.query);
             await connection.query(
                 `INSERT INTO business (email, password, registrationCode, createdAt) VALUES (?,?,?,?)`,
                 [email, hashedPassword, registrationCode, new Date()]
@@ -36,15 +35,16 @@ const signUp = async (req, res, next) => {
             );
         }
 
-        /* Creamos un mensaje para enviar por mail */
+        /* Mensaje que enviaremos al correo del usuario */
+
         const emailBody = `
-         Te acabas de registrar en Rate a Biz.
-      Pulsa este link para verificar tu cuenta: ${PUBLIC_HOST}/validate/${registrationCode}
-        `;
+      Te acabas de registrar en Rate a Biz.
+      Pulsa este link para verificar tu cuenta: ${PUBLIC_HOST}/users/validate/${registrationCode}
+    `;
         /* Enviamos el mail */
         await sendMail({
             to: email,
-            subject: 'Activa tu usuario en Diario de viajes',
+            subject: 'Activa tu usuario en Rate a Biz!',
             body: emailBody,
         });
 
@@ -58,4 +58,5 @@ const signUp = async (req, res, next) => {
         if (connection) connection.release();
     }
 };
+
 module.exports = signUp;
