@@ -4,7 +4,7 @@
 
 -   Cada entrada puede ser votada con una puntuación entre 1 y 5 distintos campos.
 
-## Endpoints comunes
+## Endpoints comunes (martin)
 
 -   POST - [/signup] - Crea un usuario pendiente de activar. (Enviar en el body el accountType) ✅
 -   POST - [/login] - Logea a un usuario retornando un token.
@@ -12,7 +12,7 @@
 -   PUT - [/password/recover] - Envia un correo con el código de reseteo de contraseña a un email.
 -   PUT - [/password/reset] - Cambia la contraseña de un usuario con un código de reseteo.
 
-## Endpoints del usuario
+## Endpoints del usuario (roberto)
 
 -   GET - [/users/:idUser] - Retorna información de un usuario concreto.
 -   PUT - [/users/:idUser] - Editar perfil de usuario
@@ -20,7 +20,7 @@
 -   PUT - [/users/:idUser/password] - Edita la contraseña de un usuario.
 -   DELETE - [/users/:idUser] - Borra un usuario.
 
-## Endpoints de la empresa
+## Endpoints de la empresa (todos)
 
 -   GET - [/business] - Retorna información de las empresas (Devuelve el top15)
 <!-- -   GET - [/business/search] - Buscador -->
@@ -30,7 +30,7 @@
 -   PUT - [/business/:idBusiness/password] - Edita la contraseña de una empresa.
 -   DELETE - [/business/idBusiness] - Borra una empresa
 
-## Endpoints de comment
+## Endpoints de comment (cris)
 
 -   GET - [/comments/:idBusiness] - Retorna los comentarios de una empresa en concreto
 -   GET - [/comments/:idUser] - Retorna los comentarios de un usuario
@@ -38,7 +38,7 @@
 -   PUT - [/comments/:idBusiness/:idComment] - Edita la descripción o el título de un comentario.
 -   DELETE - [/comments/:idBusiness/:idComment] - Borra un comentario.
 
-## Endpoints de votes
+## Endpoints de votes (martin)
 
 -   POST - [/votes/:idBusiness] - Vota una empresa.
 -   PUT - [/votes/:idBusiness/:idVote] - Edita el voto durante 24 horas (comparar createdAt con fecha actual)
