@@ -22,7 +22,8 @@
 
 ## Endpoints de la empresa
 
--   GET - [/business] - Retorna información de las empresas
+-   GET - [/business] - Retorna información de las empresas (Devuelve el top15)
+<!-- -   GET - [/business/search] - Buscador -->
 -   GET - [/business/idBusiness] - Retorna información de una empresa en concreto.
 -   PUT - [/business/:idBusiness] - Editar perfil de empresa
 -   PUT - [/business/:idBusiness/avatar] - Edita el avatar de una empresa.
@@ -41,6 +42,3 @@
 
 -   POST - [/votes/:idBusiness] - Vota una empresa.
 -   PUT - [/votes/:idBusiness/:idVote] - Edita el voto durante 24 horas (comparar createdAt con fecha actual)
-
-SENDGRID_API_KEY=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
-SENDGRID_FROM=rateabiz@hotmail.com

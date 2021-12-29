@@ -47,7 +47,6 @@ async function initDB() {
                 recoverCode VARCHAR(100),
                 place VARCHAR(75),
                 sector VARCHAR(50),
-                jobs ENUM("Informatica","Administrativo","Legal","Comercio"),
                 createdAt DATETIME NOT NULL,
                 modifiedAt DATETIME
             )
@@ -60,6 +59,7 @@ async function initDB() {
                 idUser INT NOT NULL,
                 FOREIGN KEY (idBusiness) REFERENCES business (id) ON DELETE CASCADE,
                 FOREIGN KEY (idUser) REFERENCES users (id) ON DELETE CASCADE,
+                place VARCHAR(50),
                 createdAt DATETIME NOT NULL,
                 modifiedAt DATETIME,
                 salary INT NOT NULL,
@@ -76,6 +76,7 @@ async function initDB() {
                 idUser INT NOT NULL,
                 FOREIGN KEY (idBusiness) REFERENCES business (id) ON DELETE CASCADE,
                 FOREIGN KEY (idUser) REFERENCES users (id) ON DELETE CASCADE,
+                place VARCHAR(50),
                 createdAt DATETIME NOT NULL,
                 modifiedAt DATETIME,
                 title VARCHAR (50) NOT NULL,
@@ -90,16 +91,42 @@ async function initDB() {
                 createdAt DATETIME NOT NULL
             )`
         );
+        await connection.query(
+            `CREATE TABLE jobs (
+                id INT PRIMARY KEY AUTO_INCREMENT,
+                name VARCHAR (50) NOT NULL,
+                createdAt DATETIME NOT NULL
+            )`
+        );
+        await connection.query(
+            `CREATE TABLE Bjobs (
+                id INT PRIMARY KEY AUTO_INCREMENT,
+                idBusiness INT NOT NULL,
+                idJobs INT NOT NULL,
+                FOREIGN KEY (idBusiness) REFERENCES business (id) ON DELETE CASCADE,
+                FOREIGN KEY (idJobs) REFERENCES jobs (id) ON DELETE CASCADE,
+                createdAt DATETIME NOT NULL
+            )`
+        );
+
+        await connection.query(
+            `CREATE TABLE sectors (
+                id INT PRIMARY KEY AUTO_INCREMENT,
+                name VARCHAR (50) NOT NULL,
+                createdAt DATETIME NOT NULL
+            )`
+        );
 
         console.log('Tablas creadas');
 
         const provincias = [
-            'Alava',
+            'A Coruña',
+            'Álava',
             'Albacete',
             'Alicante',
             'Almería',
             'Asturias',
-            'Avila',
+            'Ávila',
             'Badajoz',
             'Barcelona',
             'Burgos',
@@ -109,9 +136,8 @@ async function initDB() {
             'Castellón',
             'Ciudad Real',
             'Córdoba',
-            'La Coruña',
             'Cuenca',
-            'Gerona',
+            'Girona',
             'Granada',
             'Guadalajara',
             'Guipúzcoa',
@@ -120,17 +146,17 @@ async function initDB() {
             'Islas Baleares',
             'Jaén',
             'León',
-            'Lérida',
+            'Lleida',
             'Lugo',
             'Madrid',
             'Málaga',
             'Murcia',
             'Navarra',
-            'Orense',
+            'Ourense',
             'Palencia',
-            'Las Palmas',
             'Pontevedra',
             'La Rioja',
+            'Las Palmas',
             'Salamanca',
             'Segovia',
             'Sevilla',
@@ -151,6 +177,7 @@ async function initDB() {
                 [provincia, new Date()]
             );
         }
+        const jobs = [];
     } catch (err) {
         console.error(err);
     } finally {
