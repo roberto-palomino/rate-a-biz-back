@@ -21,6 +21,8 @@ const {
     getUser,
     editUser,
     editUserAvatar,
+    editUserPass,
+    deleteUser,
 } = require('./controllers/commons/users');
 
 /* Middleware que nos da informacion acerca de las peticiones que entran en el servidor */
@@ -50,6 +52,17 @@ app.put(
     canEditUser,
     editUserAvatar
 );
+// Editar la contraseña de un usuario.
+app.put(
+    '/users/:idUser/password',
+    isAuth,
+    userExists,
+    canEditUser,
+    editUserPass
+);
+
+// Anonimizar un usuario sin borrarlo:
+app.delete('/users/:idUser', isAuth, userExists, canEditUser, deleteUser);
 
 /* Middleware de error */
 // eslint-disable-next-line no-unused-vars
