@@ -11,7 +11,7 @@ const validateBusiness = async (req, res, next) => {
             `SELECT id FROM business WHERE registrationCode = ?`,
             [registrationCode]
         );
-
+        console.log(business[0].id);
         if (business.length < 1) {
             const error = new Error(
                 'No hay nigun usuario pendiente de validar con ese codigo'

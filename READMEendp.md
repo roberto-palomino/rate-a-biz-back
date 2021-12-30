@@ -7,10 +7,12 @@
 ## Endpoints comunes (martin)
 
 -   POST - [/signup] - Crea un usuario pendiente de activar. (Enviar en el body el accountType) ✅
--   GET - [/validate/:registrationCode] - Valida un usuario recién registrado.✅
+-   GET - [users/validate/:registrationCode] - Valida un usuario recién registrado.✅
+-   GET - [business/validate/:registrationCode] - Valida una empresa recién registrada.✅
 -   POST - [/login] - Logea a un usuario retornando un token.✅
 -   PUT - [/password/recover] - Envia un correo con el código de reseteo de contraseña a un email.
--   PUT - [/password/reset] - Cambia la contraseña de un usuario con un código de reseteo.
+-   PUT - [users/password/reset] - Cambia la contraseña de un usuario con un código de reseteo.
+-   PUT - [business/password/reset] - Cambia la contraseña de un usuario con un código de reseteo.
 
 ## Endpoints del usuario (roberto)
 

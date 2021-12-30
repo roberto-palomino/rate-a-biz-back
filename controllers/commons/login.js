@@ -8,9 +8,9 @@ const login = async (req, res, next) => {
     try {
         connection = await getDb();
 
-        const { email, password, role } = req.body;
+        const { email, password, userType } = req.body;
 
-        if (!email || !password || !role) {
+        if (!email || !password || !userType) {
             const error = new Error('Faltan campos');
             error.httpStatus = 400;
             throw error;
@@ -19,7 +19,7 @@ const login = async (req, res, next) => {
         let validPassword;
 
         /* Comprobamos si existe un usuario o empresa con ese email */
-        if (role === 'business') {
+        if (userType === 'business') {
             const [business] = await connection.query(
                 `SELECT id, password, active FROM business WHERE email = ?`,
                 [email]
@@ -52,7 +52,7 @@ const login = async (req, res, next) => {
             /* Creamos un objeto con la información que le vamos a dar al token */
             const tokenInfo = {
                 id: business[0].id,
-                role: business[0].role,
+                userType: business[0].userType,
             };
 
             /* Creamos el token */
@@ -95,7 +95,7 @@ const login = async (req, res, next) => {
 
             const tokenInfo = {
                 id: users[0].id,
-                role: users[0].role,
+                userType: users[0].userType,
             };
 
             const token = jwt.sign(tokenInfo, process.env.SECRET, {

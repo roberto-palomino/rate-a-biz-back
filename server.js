@@ -22,10 +22,10 @@ app.use(express.json());
 app.post('/signup', signUp);
 
 /* Validamos un usuario */
-app.get('users/validate/:registrationCode', validateUser);
+app.get('/users/validate/:registrationCode', validateUser);
 
 /* validamos una empresa */
-app.get('business/validate/:registrationCode', validateBusiness);
+app.get('/business/validate/:registrationCode', validateBusiness);
 
 /* Login de un usuario */
 app.post('/login', login);
