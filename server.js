@@ -2,7 +2,12 @@ require('dotenv').config();
 
 const express = require('express');
 const morgan = require('morgan');
-const { login, signUp, validateUser } = require('./controllers/commons');
+const {
+    login,
+    signUp,
+    validateUser,
+    validateBusiness,
+} = require('./controllers/commons');
 
 const app = express();
 const { PORT } = process.env;
@@ -17,7 +22,10 @@ app.use(express.json());
 app.post('/signup', signUp);
 
 /* Validamos un usuario */
-app.get('/validate/:registrationCode', validateUser);
+app.get('users/validate/:registrationCode', validateUser);
+
+/* validamos una empresa */
+app.get('business/validate/:registrationCode', validateBusiness);
 
 /* Login de un usuario */
 app.post('/login', login);

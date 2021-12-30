@@ -7,8 +7,8 @@
 ## Endpoints comunes (martin)
 
 -   POST - [/signup] - Crea un usuario pendiente de activar. (Enviar en el body el accountType) ✅
--   POST - [/login] - Logea a un usuario retornando un token.
--   GET - [/validate/:registrationCode] - Valida un usuario recién registrado.
+-   GET - [/validate/:registrationCode] - Valida un usuario recién registrado.✅
+-   POST - [/login] - Logea a un usuario retornando un token.✅
 -   PUT - [/password/recover] - Envia un correo con el código de reseteo de contraseña a un email.
 -   PUT - [/password/reset] - Cambia la contraseña de un usuario con un código de reseteo.
 
