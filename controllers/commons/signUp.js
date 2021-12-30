@@ -39,7 +39,7 @@ const signUp = async (req, res, next) => {
 
         const emailBody = `
       Te acabas de registrar en Rate a Biz.
-      Pulsa este link para verificar tu cuenta: ${PUBLIC_HOST}/users/validate/${registrationCode}
+      Pulsa este link para verificar tu cuenta: ${PUBLIC_HOST}/validate/${registrationCode}
     `;
         /* Enviamos el mail */
         await sendMail({

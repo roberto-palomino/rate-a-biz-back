@@ -2,7 +2,7 @@ require('dotenv').config();
 
 const express = require('express');
 const morgan = require('morgan');
-const signUp = require('./controllers/commons');
+const { login, signUp, validateUser } = require('./controllers/commons');
 
 const app = express();
 const { PORT } = process.env;
@@ -15,6 +15,12 @@ app.use(express.json());
 
 /* Registramos un usuario */
 app.post('/signup', signUp);
+
+/* Validamos un usuario */
+app.get('/validate/:registrationCode', validateUser);
+
+/* Login de un usuario */
+app.post('/login', login);
 
 /* Middleware de error */
 // eslint-disable-next-line no-unused-vars

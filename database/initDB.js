@@ -12,8 +12,11 @@ async function initDB() {
         await connection.query('DROP TABLE IF EXISTS comments');
         await connection.query('DROP TABLE IF EXISTS votes');
         await connection.query('DROP TABLE IF EXISTS provincias');
+        await connection.query('DROP TABLE IF EXISTS sectors');
         await connection.query('DROP TABLE IF EXISTS business');
         await connection.query('DROP TABLE IF EXISTS users');
+        await connection.query('DROP TABLE IF EXISTS jobs');
+        /* await connection.query('DROP TABLE IF EXISTS Bjobs'); */
 
         console.log('Tablas eliminadas');
 
@@ -98,7 +101,7 @@ async function initDB() {
                 createdAt DATETIME NOT NULL
             )`
         );
-        await connection.query(
+        /*         await connection.query(
             `CREATE TABLE Bjobs (
                 id INT PRIMARY KEY AUTO_INCREMENT,
                 idBusiness INT NOT NULL,
@@ -107,7 +110,7 @@ async function initDB() {
                 FOREIGN KEY (idJobs) REFERENCES jobs (id) ON DELETE CASCADE,
                 createdAt DATETIME NOT NULL
             )`
-        );
+        ); */
 
         await connection.query(
             `CREATE TABLE sectors (
@@ -177,7 +180,6 @@ async function initDB() {
                 [provincia, new Date()]
             );
         }
-        const jobs = [];
     } catch (err) {
         console.error(err);
     } finally {

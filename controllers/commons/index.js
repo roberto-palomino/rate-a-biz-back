@@ -1,3 +1,9 @@
+const login = require('./login');
 const signUp = require('./signUp');
+const validateUser = require('./validateUser');
 
-module.exports = signUp;
+module.exports = {
+    login,
+    signUp,
+    validateUser,
+};
