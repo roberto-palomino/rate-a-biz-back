@@ -2,19 +2,54 @@ require('dotenv').config();
 
 const express = require('express');
 const morgan = require('morgan');
+const fileUpload = require('express-fileupload');
 const signUp = require('./controllers/commons');
 
 const app = express();
 const { PORT } = process.env;
+
+// Middlewares:
+
+const { isAuth, userExists, canEditUser } = require('./middlewares/');
+
+// Controladores Usuarios:
+
+const {
+    newUser,
+    validateUser,
+    loginUser,
+    getUser,
+    editUser,
+    editUserAvatar,
+} = require('./controllers/commons/users');
 
 /* Middleware que nos da informacion acerca de las peticiones que entran en el servidor */
 app.use(morgan('dev'));
 
 /* Middleware que deserializa un body en formato "raw" */
 app.use(express.json());
-
+//Middleware que deserializa un body en formato "form-data" para trabajar con imágenes:
+app.use(fileUpload());
+// Crear un usario:
+app.post('/users', newUser);
+// Validar un usuario.
+app.get('/users/validate/:registrationCode', validateUser);
+// Logueamos un usario:
+app.post('/users/login', loginUser);
 /* Registramos un usuario */
 app.post('/signup', signUp);
+// Obtener información de un usuario.
+app.get('/users/:idUser', isAuth, getUser);
+// Editar el username y el email de un usuario.
+app.put('/users/:idUser', isAuth, userExists, canEditUser, editUser);
+// Editar el avatar de un usuario.
+app.put(
+    '/users/:idUser/avatar',
+    isAuth,
+    userExists,
+    canEditUser,
+    editUserAvatar
+);
 
 /* Middleware de error */
 // eslint-disable-next-line no-unused-vars
