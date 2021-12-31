@@ -1,6 +1,6 @@
-const getDB = require('../../../database/getDB');
+const getDB = require('../database/getDB');
 
-const { deletePhoto, generateRandomString } = require('../../../helpers');
+const { deletePhoto, generateRandomString } = require('../../helpers');
 
 const deleteUser = async (req, res, next) => {
     let connection;
@@ -8,11 +8,9 @@ const deleteUser = async (req, res, next) => {
     try {
         connection = await getDB();
 
-        // Obtenemos el id del usuario que queremos borrar / anonimizar.
         const { idUser } = req.params;
 
-        // Si el id del usuario que queremos eliminar es el administrador principal (id: 1)
-        // lanzamos un error.
+        // Mensaje de error si el usuario es administrador con id=1
         if (Number(idUser) === 1) {
             const error = new Error(
                 'El administrador principal no puede ser eliminado'
@@ -21,13 +19,11 @@ const deleteUser = async (req, res, next) => {
             throw error;
         }
 
-        // Obtenemos el avatar del usuario.
+        // Obtenemos el avatar del usuario y si lo tiene se borra:
         const [users] = await connection.query(
             `SELECT avatar FROM users WHERE id = ?`,
             [idUser]
         );
-
-        // Si el usuario tiene un avatar lo borramos del servidor.
         if (users[0].avatar) {
             await deletePhoto(users[0].avatar);
         }

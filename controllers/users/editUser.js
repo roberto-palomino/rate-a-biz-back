@@ -1,4 +1,4 @@
-const getDB = require('../../../database/getDB');
+const getDB = require('../database/getDB');
 
 const editUser = async (req, res, next) => {
     let connection;
@@ -6,49 +6,47 @@ const editUser = async (req, res, next) => {
     try {
         connection = await getDB();
 
-        // Obtenemos el id del usuario que queremos editar.
+        // Id del usuario:
         const { idUser } = req.params;
 
-        // Obtenemos los campos del body.
+        // Campos del body que solicitamos y mensaje de error si falta algún campo:
         const { username, newEmail } = req.body;
 
-        // Si faltan los dos campos lanzamos un error.
         if (!username && !newEmail) {
             const error = new Error('Faltan campos');
             error.httpStatus = 400;
             throw error;
         }
 
-        // Obtenemos el email y el username del usuario.
+        // Pedimos email y username del usuario:
         const [users] = await connection.query(
             `SELECT email, username FROM users WHERE id = ?`,
             [idUser]
         );
 
-        //    Para modificar el email:
+        //Apartado para modificar el email: se comprueba que no esté en uso por otro usuario y
+        // si ya exixte se lanza un mensaje de error:
 
         if (newEmail && newEmail !== users[0].email) {
-            // Comprobamos que el nuevo email no pertenezca a otro usuario.
             const [usersEmail] = await connection.query(
                 `SELECT id FROM users WHERE email = ?`,
                 [newEmail]
             );
 
-            // Si el email ya existe lanzamos un error.
             if (usersEmail.length > 0) {
                 const error = new Error('Ya existe un usuario con ese email');
                 error.httpStatus = 409;
                 throw error;
             }
 
-            // Actualizamos el usuario en la base de datos.
+            // Se actualiza el usuario en la base de datos:
             await connection.query(
                 `UPDATE users SET email = ?, modifiedAt = ? WHERE id = ?`,
                 [newEmail, new Date(), idUser]
             );
         }
 
-        //    Para modificar el username:
+        // Modificación del username:
 
         if (username && username !== users[0].username) {
             await connection.query(

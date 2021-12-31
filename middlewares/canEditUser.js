@@ -1,4 +1,4 @@
-const getDB = require('../database/getDB');
+const getDB = require('../controllers/database/getDB');
 
 const canEditUser = async (req, res, next) => {
     let connection;

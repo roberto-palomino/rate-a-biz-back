@@ -23,11 +23,10 @@ const {
     editUserAvatar,
     editUserPass,
     deleteUser,
-} = require('./controllers/commons/users');
+} = require('./controllers/users');
 
 /* Middleware que nos da informacion acerca de las peticiones que entran en el servidor */
 app.use(morgan('dev'));
-
 /* Middleware que deserializa un body en formato "raw" */
 app.use(express.json());
 //Middleware que deserializa un body en formato "form-data" para trabajar con imágenes:

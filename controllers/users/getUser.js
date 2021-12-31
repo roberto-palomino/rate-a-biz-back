@@ -1,4 +1,4 @@
-const getDB = require('../../../database/getDB');
+const getDB = require('../database/getDB');
 
 const getUser = async (req, res, next) => {
     let connection;

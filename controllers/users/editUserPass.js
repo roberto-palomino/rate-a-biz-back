@@ -1,4 +1,4 @@
-const getDB = require('../../../database/getDB');
+const getDB = require('../database/getDB');
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
 
@@ -8,7 +8,7 @@ const editUserPass = async (req, res, next) => {
     try {
         connection = await getDB();
 
-        // Obtenemos el id del usuario que queremos editar.
+        // Id del usuario que queremos editar.
         const { idUser } = req.params;
 
         // Obtenemos la contraseña vieja y la nueva.
@@ -20,20 +20,18 @@ const editUserPass = async (req, res, next) => {
             [idUser]
         );
 
-        // Guardamos en una variable un valoor booleano: contraseña correcta o incorrecta.
+        // Guardamos en una variable el valor de la contraseña si es correcta o incorrecta. Si es incorrecta se manda mensaje de error.
         const isValid = await bcrypt.compare(oldPassword, users[0].password);
 
-        // Si la contraseña es incorrecta lanzamos un error.
         if (!isValid) {
             const error = new Error('Contraseña incorrecta');
             error.httpStatus = 401;
             throw error;
         }
 
-        // Hasheamos la nueva contraseña.
+        // Hasheamos la nueva contraseña y actualizamos la base de datos.
         const hashedPassword = await bcrypt.hash(newPassword, saltRounds);
 
-        // Actualizamos la base de datos.
         await connection.query(
             `UPDATE users SET password = ?, modifiedAt = ? WHERE id = ?`,
             [hashedPassword, new Date(), idUser]

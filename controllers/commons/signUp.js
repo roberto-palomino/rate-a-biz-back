@@ -1,6 +1,6 @@
 const bcrypt = require('bcrypt');
 const { generateRandomString, sendMail } = require('../../helpers');
-const getDb = require('../../database/getDB');
+const getDb = require('../database/getDB');
 const { PUBLIC_HOST } = process.env;
 
 const signUp = async (req, res, next) => {

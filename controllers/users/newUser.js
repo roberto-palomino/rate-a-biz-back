@@ -1,8 +1,8 @@
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
-const getDB = require('../../../database/getDB');
+const getDB = require('../database/getDB');
 
-const { generateRandomString, sendMail } = require('../../../helpers');
+const { generateRandomString, sendMail } = require('../../helpers');
 const { PUBLIC_HOST } = process.env;
 
 const newUser = async (req, res, next) => {

@@ -10,7 +10,7 @@ const { SENDGRID_API_KEY, SENDGRID_FROM, UPLOADS_DIRECTORY } = process.env;
 /* Asignamos la api Key a sendgrid */
 sgMail.setApiKey(SENDGRID_API_KEY);
 
-//Creamos la ruta absoluta al directorio de subida de archivos.
+//Creamos la ruta absoluta al directorio de subida de archivos (imágenes u otros archivos: CV).
 const uploadsDir = path.join(__dirname, UPLOADS_DIRECTORY);
 
 /* Generamos una cadena alfanumerica */
@@ -48,10 +48,10 @@ async function sendMail({ to, subject, body }) {
 
 async function savePhoto(image, type) {
     try {
-        // Comprobamos que el directorio de subida de imágenes exista.
+        // Comprobamos que el directorio de subida de imágenes exista y si no existe lo crea:
         await ensureDir(uploadsDir);
 
-        // Convertimos la imagen en un objeto "Sharp".
+        // Convertimos la imagen en un objeto "Sharp" para poder editarla:
         const sharpImage = sharp(image.data);
 
         // Accedemos a los metadatos de la imagen para posteriormente comprobar
@@ -93,7 +93,7 @@ async function deletePhoto(photoName) {
         // Creamos la ruta absoluta a la foto.
         const photoPath = path.join(uploadsDir, photoName);
 
-        // Eliminamos la foto del disco.
+        // Eliminamos la foto del servidor.
         await unlink(photoPath);
     } catch (error) {
         console.error(error);
