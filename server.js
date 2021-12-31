@@ -7,6 +7,9 @@ const {
     signUp,
     validateUser,
     validateBusiness,
+    recoverPassword,
+    resetUserPassword,
+    resetBusinessPassword,
 } = require('./controllers/commons');
 
 const app = express();
@@ -29,6 +32,15 @@ app.get('/business/validate/:registrationCode', validateBusiness);
 
 /* Login de un usuario */
 app.post('/login', login);
+
+/* Enviar un código de recuperación al email de un registrado*/
+app.put('/password/recover', recoverPassword);
+
+/* Resetear contraseña de un usuario */
+app.put('/users/password/reset/:recoverCode', resetUserPassword);
+
+/* Resetear contraseña de una empresa */
+app.put('/business/password/reset/:recoverCode', resetBusinessPassword);
 
 /* Middleware de error */
 // eslint-disable-next-line no-unused-vars
