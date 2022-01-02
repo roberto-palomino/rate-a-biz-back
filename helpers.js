@@ -30,10 +30,11 @@ async function sendMail({ to, subject, body }) {
             subject,
             text: body,
             html: `
-            <div>
-                <h1>${subject}</h1>
-                <p>${body}</p>
-            </div> 
+                     <div>
+                        <h1>${subject}</h1>
+                        <p>${body}</p>
+                        <a href="https://imgbb.com/"><img src="https://i.ibb.co/cJP2SGB/logo-Grande.png" alt="logo-Grande" border="0"></a>
+                    </div> 
             `,
         };
         /* enviamos el mensaje */

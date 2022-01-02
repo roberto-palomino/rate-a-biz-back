@@ -1,4 +1,4 @@
-const getDB = require('../controllers/database/getDB');
+const getDB = require('../database/getDB');
 
 const userExists = async (req, res, next) => {
     let connection;

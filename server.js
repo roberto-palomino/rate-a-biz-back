@@ -3,21 +3,16 @@ require('dotenv').config();
 const express = require('express');
 const morgan = require('morgan');
 const fileUpload = require('express-fileupload');
-const signUp = require('./controllers/commons');
-
-const app = express();
-const { PORT } = process.env;
-
-// Middlewares:
-
-const { isAuth, userExists, canEditUser } = require('./middlewares/');
-
-// Controladores Usuarios:
-
 const {
-    newUser,
+    login,
+    signUp,
     validateUser,
-    loginUser,
+    validateBusiness,
+    recoverPassword,
+    resetUserPassword,
+    resetBusinessPassword,
+} = require('./controllers/commons');
+const {
     getUser,
     editUser,
     editUserAvatar,
@@ -25,24 +20,28 @@ const {
     deleteUser,
 } = require('./controllers/users');
 
+// Middlewares:
+const { isAuth, userExists, canEditUser } = require('./middlewares/');
+
+const app = express();
+const { PORT } = process.env;
+
 /* Middleware que nos da informacion acerca de las peticiones que entran en el servidor */
 app.use(morgan('dev'));
 /* Middleware que deserializa un body en formato "raw" */
 app.use(express.json());
 //Middleware que deserializa un body en formato "form-data" para trabajar con imágenes:
 app.use(fileUpload());
-// Crear un usario:
-app.post('/users', newUser);
-// Validar un usuario.
-app.get('/users/validate/:registrationCode', validateUser);
-// Logueamos un usario:
-app.post('/users/login', loginUser);
+
 /* Registramos un usuario */
 app.post('/signup', signUp);
+
 // Obtener información de un usuario.
 app.get('/users/:idUser', isAuth, getUser);
+
 // Editar el username y el email de un usuario.
 app.put('/users/:idUser', isAuth, userExists, canEditUser, editUser);
+
 // Editar el avatar de un usuario.
 app.put(
     '/users/:idUser/avatar',
@@ -51,6 +50,7 @@ app.put(
     canEditUser,
     editUserAvatar
 );
+
 // Editar la contraseña de un usuario.
 app.put(
     '/users/:idUser/password',
@@ -62,6 +62,24 @@ app.put(
 
 // Anonimizar un usuario sin borrarlo:
 app.delete('/users/:idUser', isAuth, userExists, canEditUser, deleteUser);
+
+/* Validamos un usuario */
+app.get('/users/validate/:registrationCode', validateUser);
+
+/* validamos una empresa */
+app.get('/business/validate/:registrationCode', validateBusiness);
+
+/* Login de un usuario */
+app.post('/login', login);
+
+/* Enviar un código de recuperación al email de un registrado*/
+app.put('/password/recover', recoverPassword);
+
+/* Resetear contraseña de un usuario */
+app.put('/users/password/reset/:recoverCode', resetUserPassword);
+
+/* Resetear contraseña de una empresa */
+app.put('/business/password/reset/:recoverCode', resetBusinessPassword);
 
 /* Middleware de error */
 // eslint-disable-next-line no-unused-vars

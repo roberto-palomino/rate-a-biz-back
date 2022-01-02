@@ -1,4 +1,4 @@
-const getDB = require('../database/getDB');
+const getDB = require('../../database/getDB');
 
 const { deletePhoto, generateRandomString } = require('../../helpers');
 

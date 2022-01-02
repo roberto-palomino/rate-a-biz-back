@@ -1,4 +1,4 @@
-const getDB = require('../controllers/database/getDB');
+const getDB = require('../database/getDB');
 
 const jwt = require('jsonwebtoken');
 
