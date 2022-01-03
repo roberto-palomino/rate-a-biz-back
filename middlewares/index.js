@@ -1,9 +1,15 @@
 const canEditUser = require('./canEditUser');
-const isAuth = require('./isAuth');
+const userIsAuth = require('./userIsAuth');
 const userExists = require('./userExists');
+const canEditBusiness = require('./canEditBusiness');
+const businessExists = require('./businessExists');
+const businessIsAuth = require('./businessIsAuth');
 
 module.exports = {
-    isAuth,
+    userIsAuth,
     userExists,
     canEditUser,
+    businessIsAuth,
+    canEditBusiness,
+    businessExists,
 };

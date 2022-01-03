@@ -21,7 +21,14 @@ const {
 } = require('./controllers/users');
 
 // Middlewares:
-const { isAuth, userExists, canEditUser } = require('./middlewares/');
+const {
+    userIsAuth,
+    userExists,
+    canEditUser,
+    businessExists,
+    businessIsAuth,
+    canEditBusiness,
+} = require('./middlewares/');
 
 const app = express();
 const { PORT } = process.env;
@@ -35,33 +42,6 @@ app.use(fileUpload());
 
 /* Registramos un usuario */
 app.post('/signup', signUp);
-
-// Obtener información de un usuario.
-app.get('/users/:idUser', isAuth, getUser);
-
-// Editar el username y el email de un usuario.
-app.put('/users/:idUser', isAuth, userExists, canEditUser, editUser);
-
-// Editar el avatar de un usuario.
-app.put(
-    '/users/:idUser/avatar',
-    isAuth,
-    userExists,
-    canEditUser,
-    editUserAvatar
-);
-
-// Editar la contraseña de un usuario.
-app.put(
-    '/users/:idUser/password',
-    isAuth,
-    userExists,
-    canEditUser,
-    editUserPass
-);
-
-// Anonimizar un usuario sin borrarlo:
-app.delete('/users/:idUser', isAuth, userExists, canEditUser, deleteUser);
 
 /* Validamos un usuario */
 app.get('/users/validate/:registrationCode', validateUser);
@@ -80,6 +60,32 @@ app.put('/users/password/reset/:recoverCode', resetUserPassword);
 
 /* Resetear contraseña de una empresa */
 app.put('/business/password/reset/:recoverCode', resetBusinessPassword);
+// Obtener información de un usuario.
+app.get('/users/:idUser', userIsAuth, getUser);
+
+// Editar el username y el email de un usuario.
+app.put('/users/:idUser', userIsAuth, userExists, canEditUser, editUser);
+
+// Editar el avatar de un usuario.
+app.put(
+    '/users/:idUser/avatar',
+    userIsAuth,
+    userExists,
+    canEditUser,
+    editUserAvatar
+);
+
+// Editar la contraseña de un usuario.
+app.put(
+    '/users/:idUser/password',
+    userIsAuth,
+    userExists,
+    canEditUser,
+    editUserPass
+);
+
+// Anonimizar un usuario sin borrarlo:
+app.delete('/users/:idUser', userIsAuth, userExists, canEditUser, deleteUser);
 
 /* Middleware de error */
 // eslint-disable-next-line no-unused-vars

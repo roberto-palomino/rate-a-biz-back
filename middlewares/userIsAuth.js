@@ -2,7 +2,7 @@ const getDB = require('../database/getDB');
 
 const jwt = require('jsonwebtoken');
 
-const isAuth = async (req, res, next) => {
+const userIsAuth = async (req, res, next) => {
     let connection;
 
     try {
@@ -55,4 +55,4 @@ const isAuth = async (req, res, next) => {
     }
 };
 
-module.exports = isAuth;
+module.exports = userIsAuth;
