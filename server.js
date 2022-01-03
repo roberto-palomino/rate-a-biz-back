@@ -2,6 +2,7 @@ require('dotenv').config();
 
 const express = require('express');
 const morgan = require('morgan');
+const fileUpload = require('express-fileupload');
 const {
     login,
     signUp,
@@ -11,18 +12,56 @@ const {
     resetUserPassword,
     resetBusinessPassword,
 } = require('./controllers/commons');
+const {
+    getUser,
+    editUser,
+    editUserAvatar,
+    editUserPass,
+    deleteUser,
+} = require('./controllers/users');
+
+// Middlewares:
+const { isAuth, userExists, canEditUser } = require('./middlewares/');
 
 const app = express();
 const { PORT } = process.env;
 
 /* Middleware que nos da informacion acerca de las peticiones que entran en el servidor */
 app.use(morgan('dev'));
-
 /* Middleware que deserializa un body en formato "raw" */
 app.use(express.json());
+//Middleware que deserializa un body en formato "form-data" para trabajar con imágenes:
+app.use(fileUpload());
 
 /* Registramos un usuario */
 app.post('/signup', signUp);
+
+// Obtener información de un usuario.
+app.get('/users/:idUser', isAuth, getUser);
+
+// Editar el username y el email de un usuario.
+app.put('/users/:idUser', isAuth, userExists, canEditUser, editUser);
+
+// Editar el avatar de un usuario.
+app.put(
+    '/users/:idUser/avatar',
+    isAuth,
+    userExists,
+    canEditUser,
+    editUserAvatar
+);
+
+// Editar la contraseña de un usuario.
+app.put(
+    '/users/:idUser/password',
+    isAuth,
+    userExists,
+    canEditUser,
+    editUserPass
+);
+
+// Anonimizar un usuario sin borrarlo:
+app.delete('/users/:idUser', isAuth, userExists, canEditUser, deleteUser);
 
 /* Validamos un usuario */
 app.get('/users/validate/:registrationCode', validateUser);

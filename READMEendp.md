@@ -16,11 +16,11 @@
 
 ## Endpoints del usuario (roberto)
 
--   GET - [/users/:idUser] - Retorna información de un usuario concreto.
--   PUT - [/users/:idUser] - Editar perfil de usuario
--   PUT - [/users/:idUser/avatar] - Edita el avatar de un usuario.
--   PUT - [/users/:idUser/password] - Edita la contraseña de un usuario.
--   DELETE - [/users/:idUser] - Borra un usuario.
+-   GET - [/users/:idUser] - Retorna información de un usuario concreto.✅
+-   PUT - [/users/:idUser] - Editar perfil de usuario.✅
+-   PUT - [/users/:idUser/avatar] - Edita el avatar de un usuario.✅
+-   PUT - [/users/:idUser/password] - Edita la contraseña de un usuario.✅
+-   DELETE - [/users/:idUser] - Borra un usuario.✅
 
 ## Endpoints de la empresa (todos)
 
