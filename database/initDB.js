@@ -28,6 +28,8 @@ async function initDB() {
                 password VARCHAR(100) NOT NULL,
                 username VARCHAR(50),
                 avatar VARCHAR(50),
+                name VARCHAR(50),
+                lastname VARCHAR(50),
                 active BOOLEAN DEFAULT false,
                 deleted BOOLEAN DEFAULT false,
                 role ENUM("admin", "normal") DEFAULT "normal" NOT NULL,
@@ -39,84 +41,59 @@ async function initDB() {
 `);
         await connection.query(
             `CREATE TABLE business (
-                id INT PRIMARY KEY AUTO_INCREMENT,
-                email VARCHAR(100) UNIQUE NOT NULL,
-                password VARCHAR(100) NOT NULL,
-                username VARCHAR(50),
-                avatar VARCHAR(50),
-                active BOOLEAN DEFAULT false,
-                deleted BOOLEAN DEFAULT false,
-                registrationCode VARCHAR(100),
-                recoverCode VARCHAR(100),
-                place VARCHAR(75),
-                sector VARCHAR(50),
+                FOREIGN KEY (idUser) REFERENCES users (id) ON DELETE CASCADE,
+                mainPlace VARCHAR(75), ???
+                name,
+                description
+                FOREIGN KEY (idSector) REFERENCES sector (id) ON DELETE CASCADE,
                 createdAt DATETIME NOT NULL,
                 modifiedAt DATETIME
             )
 `
         );
         await connection.query(
-            `CREATE TABLE votes (
+            `CREATE TABLE review (
                 id INT PRIMARY KEY AUTO_INCREMENT,
                 idBusiness INT NOT NULL,
                 idUser INT NOT NULL,
                 FOREIGN KEY (idBusiness) REFERENCES business (id) ON DELETE CASCADE,
                 FOREIGN KEY (idUser) REFERENCES users (id) ON DELETE CASCADE,
-                place VARCHAR(50),
+                FOREIGN KEY (idJobs) REFERENCES jobs (id) ON DELETE CASCADE,
+                FOREIGN KEY (idPlace) REFERENCES provincias (id) ON DELETE CASCADE,
                 createdAt DATETIME NOT NULL,
                 modifiedAt DATETIME,
                 salary INT NOT NULL,
                 enviroment INT NOT NULL,
                 conciliation INT NOT NULL,
-                oportunitys INT NOT NULL  
+                oportunitys INT NOT NULL,
+                title VARCHAR (50) NOT NULL,
+                description VARCHAR (500) NOT NULL  
             )
  `
-        );
-        await connection.query(
-            `CREATE TABLE comments (
-                id INT PRIMARY KEY AUTO_INCREMENT,
-                idBusiness INT NOT NULL,
-                idUser INT NOT NULL,
-                FOREIGN KEY (idBusiness) REFERENCES business (id) ON DELETE CASCADE,
-                FOREIGN KEY (idUser) REFERENCES users (id) ON DELETE CASCADE,
-                place VARCHAR(50),
-                createdAt DATETIME NOT NULL,
-                modifiedAt DATETIME,
-                title VARCHAR (50) NOT NULL,
-                body VARCHAR (500) NOT NULL 
-            )
-`
         );
         await connection.query(
             `CREATE TABLE provincias (
                 id INT PRIMARY KEY AUTO_INCREMENT,
                 name VARCHAR (50) NOT NULL,
-                createdAt DATETIME NOT NULL
+                createdAt DATETIME NOT NULL,
+                modifiedAt DATETIME
             )`
         );
         await connection.query(
             `CREATE TABLE jobs (
                 id INT PRIMARY KEY AUTO_INCREMENT,
                 name VARCHAR (50) NOT NULL,
-                createdAt DATETIME NOT NULL
+                createdAt DATETIME NOT NULL,
+                modifiedAt DATETIME
             )`
         );
-        /*         await connection.query(
-            `CREATE TABLE Bjobs (
-                id INT PRIMARY KEY AUTO_INCREMENT,
-                idBusiness INT NOT NULL,
-                idJobs INT NOT NULL,
-                FOREIGN KEY (idBusiness) REFERENCES business (id) ON DELETE CASCADE,
-                FOREIGN KEY (idJobs) REFERENCES jobs (id) ON DELETE CASCADE,
-                createdAt DATETIME NOT NULL
-            )`
-        ); */
 
         await connection.query(
             `CREATE TABLE sectors (
                 id INT PRIMARY KEY AUTO_INCREMENT,
                 name VARCHAR (50) NOT NULL,
-                createdAt DATETIME NOT NULL
+                createdAt DATETIME NOT NULL,
+                modifiedAt DATETIME
             )`
         );
 

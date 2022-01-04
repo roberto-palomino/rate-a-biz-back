@@ -60,6 +60,7 @@ app.put('/users/password/reset/:recoverCode', resetUserPassword);
 
 /* Resetear contraseña de una empresa */
 app.put('/business/password/reset/:recoverCode', resetBusinessPassword);
+
 // Obtener información de un usuario.
 app.get('/users/:idUser', userIsAuth, getUser);
 
