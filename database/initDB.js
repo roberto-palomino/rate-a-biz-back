@@ -9,14 +9,13 @@ async function initDB() {
         connection = await getDB();
 
         /* Eliminamos las tablas existentes para evitar conflictos */
-        await connection.query('DROP TABLE IF EXISTS comments');
-        await connection.query('DROP TABLE IF EXISTS votes');
-        await connection.query('DROP TABLE IF EXISTS provincias');
-        await connection.query('DROP TABLE IF EXISTS sectors');
-        await connection.query('DROP TABLE IF EXISTS business');
-        await connection.query('DROP TABLE IF EXISTS users');
+        await connection.query('DROP TABLE IF EXISTS review');
         await connection.query('DROP TABLE IF EXISTS jobs');
-        /* await connection.query('DROP TABLE IF EXISTS Bjobs'); */
+        await connection.query('DROP TABLE IF EXISTS business_states');
+        await connection.query('DROP TABLE IF EXISTS business');
+        await connection.query('DROP TABLE IF EXISTS states');
+        await connection.query('DROP TABLE IF EXISTS sectors');
+        await connection.query('DROP TABLE IF EXISTS users');
 
         console.log('Tablas eliminadas');
 
@@ -28,9 +27,11 @@ async function initDB() {
                 password VARCHAR(100) NOT NULL,
                 username VARCHAR(50),
                 avatar VARCHAR(50),
+                name VARCHAR(50),
+                lastname VARCHAR(50),
                 active BOOLEAN DEFAULT false,
                 deleted BOOLEAN DEFAULT false,
-                role ENUM("admin", "normal") DEFAULT "normal" NOT NULL,
+                role ENUM("admin", "worker", "business") DEFAULT "worker" NOT NULL,
                 registrationCode VARCHAR(100),
                 recoverCode VARCHAR(100),
                 createdAt DATETIME NOT NULL,
@@ -38,91 +39,85 @@ async function initDB() {
             )
 `);
         await connection.query(
+            `CREATE TABLE sectors (
+                id INT PRIMARY KEY AUTO_INCREMENT,
+                name VARCHAR (50) UNIQUE NOT NULL,
+                createdAt DATETIME NOT NULL,
+                modifiedAt DATETIME
+            )`
+        );
+        await connection.query(
             `CREATE TABLE business (
                 id INT PRIMARY KEY AUTO_INCREMENT,
-                email VARCHAR(100) UNIQUE NOT NULL,
-                password VARCHAR(100) NOT NULL,
-                username VARCHAR(50),
-                avatar VARCHAR(50),
-                active BOOLEAN DEFAULT false,
-                deleted BOOLEAN DEFAULT false,
-                registrationCode VARCHAR(100),
-                recoverCode VARCHAR(100),
-                place VARCHAR(75),
-                sector VARCHAR(50),
+                name VARCHAR(75),
+                description VARCHAR(250),
+                headquarter VARCHAR(75),
+                url_web VARCHAR(255),
+                linkedin VARCHAR(255),
+                idUser INT NOT NULL,
+                FOREIGN KEY (idUser) REFERENCES users (id) ON DELETE CASCADE,
                 createdAt DATETIME NOT NULL,
                 modifiedAt DATETIME
             )
 `
         );
         await connection.query(
-            `CREATE TABLE votes (
-                id INT PRIMARY KEY AUTO_INCREMENT,
-                idBusiness INT NOT NULL,
-                idUser INT NOT NULL,
-                FOREIGN KEY (idBusiness) REFERENCES business (id) ON DELETE CASCADE,
-                FOREIGN KEY (idUser) REFERENCES users (id) ON DELETE CASCADE,
-                place VARCHAR(50),
-                createdAt DATETIME NOT NULL,
-                modifiedAt DATETIME,
-                salary INT NOT NULL,
-                enviroment INT NOT NULL,
-                conciliation INT NOT NULL,
-                oportunitys INT NOT NULL  
-            )
- `
-        );
-        await connection.query(
-            `CREATE TABLE comments (
-                id INT PRIMARY KEY AUTO_INCREMENT,
-                idBusiness INT NOT NULL,
-                idUser INT NOT NULL,
-                FOREIGN KEY (idBusiness) REFERENCES business (id) ON DELETE CASCADE,
-                FOREIGN KEY (idUser) REFERENCES users (id) ON DELETE CASCADE,
-                place VARCHAR(50),
-                createdAt DATETIME NOT NULL,
-                modifiedAt DATETIME,
-                title VARCHAR (50) NOT NULL,
-                body VARCHAR (500) NOT NULL 
-            )
-`
-        );
-        await connection.query(
-            `CREATE TABLE provincias (
+            `CREATE TABLE states (
                 id INT PRIMARY KEY AUTO_INCREMENT,
                 name VARCHAR (50) NOT NULL,
-                createdAt DATETIME NOT NULL
+                createdAt DATETIME NOT NULL,
+                modifiedAt DATETIME
+            )`
+        );
+        await connection.query(
+            `CREATE TABLE business_states (
+                id INT PRIMARY KEY AUTO_INCREMENT,
+                idBusiness INT NOT NULL,
+                idStates INT NOT NULL,
+                FOREIGN KEY (idBusiness) REFERENCES business (id) ON DELETE CASCADE,
+                FOREIGN KEY (idStates) REFERENCES states (id) ON DELETE CASCADE,
+                isheadquartes BOOLEAN DEFAULT false,
+                createdAt DATETIME NOT NULL,
+                modifiedAt DATETIME
             )`
         );
         await connection.query(
             `CREATE TABLE jobs (
                 id INT PRIMARY KEY AUTO_INCREMENT,
-                name VARCHAR (50) NOT NULL,
-                createdAt DATETIME NOT NULL
+                name VARCHAR (50) UNIQUE NOT NULL,
+                createdAt DATETIME NOT NULL,
+                modifiedAt DATETIME
             )`
         );
-        /*         await connection.query(
-            `CREATE TABLE Bjobs (
+        await connection.query(
+            `CREATE TABLE review (
                 id INT PRIMARY KEY AUTO_INCREMENT,
                 idBusiness INT NOT NULL,
+                idUser INT NOT NULL,
                 idJobs INT NOT NULL,
-                FOREIGN KEY (idBusiness) REFERENCES business (id) ON DELETE CASCADE,
+                idSector INT NOT NULL,
+                FOREIGN KEY (idBusiness) REFERENCES business_states (id) ON DELETE CASCADE,
+                FOREIGN KEY (idUser) REFERENCES users (id) ON DELETE CASCADE,
                 FOREIGN KEY (idJobs) REFERENCES jobs (id) ON DELETE CASCADE,
-                createdAt DATETIME NOT NULL
-            )`
-        ); */
-
-        await connection.query(
-            `CREATE TABLE sectors (
-                id INT PRIMARY KEY AUTO_INCREMENT,
-                name VARCHAR (50) NOT NULL,
-                createdAt DATETIME NOT NULL
-            )`
+                FOREIGN KEY (idSector) REFERENCES sectors (id) ON DELETE CASCADE,
+                salary_range DECIMAL(10,2),
+                start_year SMALLINT UNSIGNED NOT NULL,
+                end_year SMALLINT UNSIGNED NULL,
+                salary CHAR(1) NOT NULL,
+                enviroment CHAR(1) NOT NULL,
+                conciliation CHAR(1) NOT NULL,
+                oportunitys CHAR(1) NOT NULL,
+                title VARCHAR (50) NOT NULL,
+                description VARCHAR (500) NOT NULL,  
+                createdAt DATETIME NOT NULL,
+                modifiedAt DATETIME
+                )
+ `
         );
 
         console.log('Tablas creadas');
 
-        const provincias = [
+        const states = [
             'A Coruña',
             'Álava',
             'Albacete',
@@ -174,10 +169,10 @@ async function initDB() {
             'Zamora',
             'Zaragoza',
         ];
-        for (const provincia of provincias) {
+        for (const state of states) {
             await connection.query(
-                `INSERT INTO provincias (name, createdAt) VALUES (?, ?)`,
-                [provincia, new Date()]
+                `INSERT INTO states (name, createdAt) VALUES (?, ?)`,
+                [state, new Date()]
             );
         }
     } catch (err) {
