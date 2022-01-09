@@ -44,10 +44,7 @@ app.use(fileUpload());
 app.post('/signup', signUp);
 
 /* Validamos un usuario */
-app.get('/users/validate/:registrationCode', validateUser);
-
-/* validamos una empresa */
-app.get('/business/validate/:registrationCode', validateBusiness);
+app.get('/validate/:registrationCode', validateUser);
 
 /* Login de un usuario */
 app.post('/login', login);

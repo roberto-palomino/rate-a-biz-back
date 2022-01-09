@@ -55,9 +55,7 @@ async function initDB() {
                 url_web VARCHAR(255),
                 linkedin VARCHAR(255),
                 idUser INT NOT NULL,
-                idSector INT NOT NULL,
                 FOREIGN KEY (idUser) REFERENCES users (id) ON DELETE CASCADE,
-                FOREIGN KEY (idSector) REFERENCES sectors (id) ON DELETE CASCADE,
                 createdAt DATETIME NOT NULL,
                 modifiedAt DATETIME
             )
@@ -97,9 +95,11 @@ async function initDB() {
                 idBusiness INT NOT NULL,
                 idUser INT NOT NULL,
                 idJobs INT NOT NULL,
+                idSector INT NOT NULL,
                 FOREIGN KEY (idBusiness) REFERENCES business_states (id) ON DELETE CASCADE,
                 FOREIGN KEY (idUser) REFERENCES users (id) ON DELETE CASCADE,
                 FOREIGN KEY (idJobs) REFERENCES jobs (id) ON DELETE CASCADE,
+                FOREIGN KEY (idSector) REFERENCES sectors (id) ON DELETE CASCADE,
                 salary_range DECIMAL(10,2),
                 start_year SMALLINT UNSIGNED NOT NULL,
                 end_year SMALLINT UNSIGNED NULL,
