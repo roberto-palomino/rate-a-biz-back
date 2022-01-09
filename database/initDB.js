@@ -106,7 +106,7 @@ async function initDB() {
                 salary CHAR(1) NOT NULL,
                 enviroment CHAR(1) NOT NULL,
                 conciliation CHAR(1) NOT NULL,
-                oportunitys CHAR(1) NOT NULL,
+                oportunities CHAR(1) NOT NULL,
                 title VARCHAR (50) NOT NULL,
                 description VARCHAR (500) NOT NULL,  
                 createdAt DATETIME NOT NULL,
