@@ -7,7 +7,6 @@ const {
     login,
     signUp,
     validateUser,
-    validateBusiness,
     recoverPassword,
     resetUserPassword,
     resetBusinessPassword,
@@ -21,14 +20,7 @@ const {
 } = require('./controllers/users');
 
 // Middlewares:
-const {
-    userIsAuth,
-    userExists,
-    canEditUser,
-    businessExists,
-    businessIsAuth,
-    canEditBusiness,
-} = require('./middlewares/');
+const { userIsAuth, userExists, canEditUser } = require('./middlewares/');
 
 const app = express();
 const { PORT } = process.env;

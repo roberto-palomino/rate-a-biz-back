@@ -16,7 +16,7 @@ async function initDB() {
         await connection.query('DROP TABLE IF EXISTS states');
         await connection.query('DROP TABLE IF EXISTS sectors');
         await connection.query('DROP TABLE IF EXISTS users');
-        await connection.query('DROP TABLE IF EXISTS wages');
+        await connection.query('DROP TABLE IF EXISTS salary_range');
 
         console.log('Tablas eliminadas');
 
