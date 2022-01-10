@@ -26,7 +26,7 @@ async function initDB() {
                 id INT PRIMARY KEY AUTO_INCREMENT,
                 email VARCHAR(100) UNIQUE NOT NULL,
                 password VARCHAR(100) NOT NULL,
-                username VARCHAR(50) UNIQUE NOT NULL,
+                username VARCHAR(50) UNIQUE,
                 avatar VARCHAR(50),
                 name VARCHAR(50),
                 lastname VARCHAR(50),
