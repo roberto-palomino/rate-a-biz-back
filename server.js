@@ -9,7 +9,6 @@ const {
     validateUser,
     recoverPassword,
     resetUserPassword,
-    resetBusinessPassword,
 } = require('./controllers/commons');
 const {
     getUser,
@@ -45,10 +44,7 @@ app.post('/login', login);
 app.put('/password/recover', recoverPassword);
 
 /* Resetear contraseña de un usuario */
-app.put('/users/password/reset/:recoverCode', resetUserPassword);
-
-/* Resetear contraseña de una empresa */
-app.put('/business/password/reset/:recoverCode', resetBusinessPassword);
+app.put('/password/reset/:recoverCode', resetUserPassword);
 
 // Obtener información de un usuario.
 app.get('/users/:idUser', userIsAuth, getUser);
