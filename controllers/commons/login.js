@@ -20,7 +20,7 @@ const login = async (req, res, next) => {
 
         /* Comprobamos si existe un usuario o empresa con ese email */
         const [users] = await connection.query(
-            `SELECT id, password, active FROM users WHERE email = ?`,
+            `SELECT id, password, role, active FROM users WHERE email = ?`,
             [email]
         );
 
@@ -48,7 +48,7 @@ const login = async (req, res, next) => {
         /* Creamos un objeto con la información que le vamos a dar al token */
         const tokenInfo = {
             id: users[0].id,
-            userType: users[0].userType,
+            role: users[0].role,
         };
 
         /* Creamos el token */

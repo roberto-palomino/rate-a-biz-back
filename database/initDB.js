@@ -16,6 +16,7 @@ async function initDB() {
         await connection.query('DROP TABLE IF EXISTS states');
         await connection.query('DROP TABLE IF EXISTS sectors');
         await connection.query('DROP TABLE IF EXISTS users');
+        await connection.query('DROP TABLE IF EXISTS wages');
 
         console.log('Tablas eliminadas');
 
@@ -25,7 +26,7 @@ async function initDB() {
                 id INT PRIMARY KEY AUTO_INCREMENT,
                 email VARCHAR(100) UNIQUE NOT NULL,
                 password VARCHAR(100) NOT NULL,
-                username VARCHAR(50),
+                username VARCHAR(50) UNIQUE NOT NULL,
                 avatar VARCHAR(50),
                 name VARCHAR(50),
                 lastname VARCHAR(50),
@@ -51,11 +52,12 @@ async function initDB() {
                 id INT PRIMARY KEY AUTO_INCREMENT,
                 name VARCHAR(75),
                 description VARCHAR(250),
-                headquarter VARCHAR(75),
                 url_web VARCHAR(255),
                 linkedin VARCHAR(255),
                 idUser INT NOT NULL,
+                idSector INT NULL,
                 FOREIGN KEY (idUser) REFERENCES users (id) ON DELETE CASCADE,
+                FOREIGN KEY (idSector) REFERENCES sectors (id) ON DELETE CASCADE,
                 createdAt DATETIME NOT NULL,
                 modifiedAt DATETIME
             )
@@ -77,6 +79,7 @@ async function initDB() {
                 FOREIGN KEY (idBusiness) REFERENCES business (id) ON DELETE CASCADE,
                 FOREIGN KEY (idStates) REFERENCES states (id) ON DELETE CASCADE,
                 isheadquartes BOOLEAN DEFAULT false,
+                UNIQUE (idBusiness, idStates),
                 createdAt DATETIME NOT NULL,
                 modifiedAt DATETIME
             )`
@@ -90,23 +93,30 @@ async function initDB() {
             )`
         );
         await connection.query(
+            `CREATE TABLE wages_range (
+                id INT PRIMARY KEY AUTO_INCREMENT,
+                name VARCHAR (50) UNIQUE NOT NULL,
+                createdAt DATETIME NOT NULL,
+                modifiedAt DATETIME
+            )`
+        );
+        await connection.query(
             `CREATE TABLE review (
                 id INT PRIMARY KEY AUTO_INCREMENT,
                 idBusiness INT NOT NULL,
                 idUser INT NOT NULL,
                 idJobs INT NOT NULL,
-                idSector INT NOT NULL,
+                idWages INT NOT NULL,
                 FOREIGN KEY (idBusiness) REFERENCES business_states (id) ON DELETE CASCADE,
                 FOREIGN KEY (idUser) REFERENCES users (id) ON DELETE CASCADE,
                 FOREIGN KEY (idJobs) REFERENCES jobs (id) ON DELETE CASCADE,
-                FOREIGN KEY (idSector) REFERENCES sectors (id) ON DELETE CASCADE,
-                salary_range DECIMAL(10,2),
+                FOREIGN KEY (idWages) REFERENCES wages_range (id) ON DELETE CASCADE,
                 start_year SMALLINT UNSIGNED NOT NULL,
                 end_year SMALLINT UNSIGNED NULL,
-                salary CHAR(1) NOT NULL,
+                wage CHAR(1) NOT NULL,
                 enviroment CHAR(1) NOT NULL,
                 conciliation CHAR(1) NOT NULL,
-                oportunitys CHAR(1) NOT NULL,
+                oportunities CHAR(1) NOT NULL,
                 title VARCHAR (50) NOT NULL,
                 description VARCHAR (500) NOT NULL,  
                 createdAt DATETIME NOT NULL,
