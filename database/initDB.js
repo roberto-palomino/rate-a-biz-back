@@ -78,7 +78,7 @@ async function initDB() {
                 idStates INT NOT NULL,
                 FOREIGN KEY (idBusiness) REFERENCES business (id) ON DELETE CASCADE,
                 FOREIGN KEY (idStates) REFERENCES states (id) ON DELETE CASCADE,
-                isheadquartes BOOLEAN DEFAULT false,
+                isHeadquartes BOOLEAN DEFAULT false,
                 UNIQUE (idBusiness, idStates),
                 createdAt DATETIME NOT NULL,
                 modifiedAt DATETIME
@@ -93,7 +93,7 @@ async function initDB() {
             )`
         );
         await connection.query(
-            `CREATE TABLE wages_range (
+            `CREATE TABLE salaries_range (
                 id INT PRIMARY KEY AUTO_INCREMENT,
                 name VARCHAR (50) UNIQUE NOT NULL,
                 createdAt DATETIME NOT NULL,
@@ -106,14 +106,14 @@ async function initDB() {
                 idBusiness INT NOT NULL,
                 idUser INT NOT NULL,
                 idJobs INT NOT NULL,
-                idWages INT NOT NULL,
+                idSalaries INT NOT NULL,
                 FOREIGN KEY (idBusiness) REFERENCES business_states (id) ON DELETE CASCADE,
                 FOREIGN KEY (idUser) REFERENCES users (id) ON DELETE CASCADE,
                 FOREIGN KEY (idJobs) REFERENCES jobs (id) ON DELETE CASCADE,
-                FOREIGN KEY (idWages) REFERENCES wages_range (id) ON DELETE CASCADE,
+                FOREIGN KEY (idSalaries) REFERENCES salaries_range (id) ON DELETE CASCADE,
                 start_year SMALLINT UNSIGNED NOT NULL,
                 end_year SMALLINT UNSIGNED NULL,
-                wage CHAR(1) NOT NULL,
+                salary CHAR(1) NOT NULL,
                 enviroment CHAR(1) NOT NULL,
                 conciliation CHAR(1) NOT NULL,
                 oportunities CHAR(1) NOT NULL,
