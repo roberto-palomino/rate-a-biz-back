@@ -17,6 +17,12 @@ const {
     editUserPass,
     deleteUser,
 } = require('./controllers/users');
+const {
+    getStates,
+    getJobs,
+    getSectors,
+    getSalaries,
+} = require('./controllers/tables');
 
 // Middlewares:
 const { userIsAuth, userExists, canEditUser } = require('./middlewares/');
@@ -30,6 +36,10 @@ app.use(morgan('dev'));
 app.use(express.json());
 //Middleware que deserializa un body en formato "form-data" para trabajar con imágenes:
 app.use(fileUpload());
+
+/* ##########################
+   ###### COMMONS  ##########
+   ##########################*/
 
 /* Registramos un usuario */
 app.post('/signup', signUp);
@@ -45,6 +55,10 @@ app.put('/password/recover', recoverPassword);
 
 /* Resetear contraseña de un usuario */
 app.put('/password/reset/:recoverCode', resetUserPassword);
+
+/* ##########################
+   ######## USERS  ##########
+   ##########################*/
 
 // Obtener información de un usuario.
 app.get('/users/:idUser', userIsAuth, getUser);
@@ -72,6 +86,26 @@ app.put(
 
 // Anonimizar un usuario sin borrarlo:
 app.delete('/users/:idUser', userIsAuth, userExists, canEditUser, deleteUser);
+
+/* ##########################
+   ####### TABLAS ###########
+   ##########################*/
+
+/* Obtener los nombres de las provincias */
+app.get('/states', getStates);
+
+/* Obtener los nombres de los trabajos */
+app.get('/jobs', getJobs);
+
+/* Obtener los nombres de los sectores */
+app.get('/sectors', getSectors);
+
+/* Obtener los rangos salariales*/
+app.get('/salaries', getSalaries);
+
+/* ##########################
+   ###### MIDDLEWARES  ##########
+   ##########################*/
 
 /* Middleware de error */
 // eslint-disable-next-line no-unused-vars
