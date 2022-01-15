@@ -10,10 +10,10 @@ const signUp = async (req, res, next) => {
         connection = await getDb();
 
         /* Obtenemos los campos necesarios del body */
-        const { email, password, userType } = req.body;
+        const { email, password, role } = req.body;
 
         /* Si falta algun campo lanzamos un error */
-        if (!email || !password || !userType) {
+        if (!email || !password || !role) {
             const error = new Error('Faltan campos');
             error.httpStatus = 400;
             throw error;
@@ -23,10 +23,18 @@ const signUp = async (req, res, next) => {
         /* Hasheamos la contraseña */
         const hashedPassword = await bcrypt.hash(password, 10);
         /* Guardamos el usuario en la base de datos según sea empresa o usuario*/
-        if (userType === 'business') {
+        if (role === 'business') {
             await connection.query(
-                `INSERT INTO business (email, password, registrationCode, createdAt) VALUES (?,?,?,?)`,
-                [email, hashedPassword, registrationCode, new Date()]
+                `INSERT INTO users (email, password, role, registrationCode, createdAt) VALUES (?,?,?,?,?)`,
+                [email, hashedPassword, role, registrationCode, new Date()]
+            );
+            const [users] = await connection.query(
+                `SELECT id FROM users WHERE email = ?`,
+                [email]
+            );
+            await connection.query(
+                `INSERT INTO business (idUser, createdAt) VALUES (?, ?)`,
+                [users[0].id, new Date()]
             );
         } else {
             await connection.query(
@@ -39,7 +47,7 @@ const signUp = async (req, res, next) => {
 
         const emailBody = `
       Te acabas de registrar en Rate a Biz.
-      Pulsa este link para verificar tu cuenta: ${PUBLIC_HOST}/${userType}/validate/${registrationCode}
+      Pulsa este link para verificar tu cuenta: ${PUBLIC_HOST}/validate/${registrationCode}
     `;
         /* Enviamos el mail */
         await sendMail({
