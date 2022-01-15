@@ -7,12 +7,10 @@
 ## Endpoints comunes
 
 -   POST - [/signup] - Crea un usuario pendiente de activar. (Enviar en el body el accountType) ✅
--   GET - [users/validate/:registrationCode] - Valida un usuario recién registrado.✅
--   GET - [business/validate/:registrationCode] - Valida una empresa recién registrada.✅
+-   GET - [/validate/:registrationCode] - Valida un usuario recién registrado.✅
 -   POST - [/login] - Logea a un usuario retornando un token.✅
 -   PUT - [/password/recover] - Envia un correo con el código de reseteo de contraseña a un email.✅
--   PUT - [/users/password/reset/:recoverCode] - Cambia la contraseña de un usuario con un código de reseteo.✅
--   PUT - [/business/password/reset/:recoverCode] - Cambia la contraseña de un usuario con un código de reseteo.✅
+-   PUT - [/password/reset/:recoverCode] - Cambia la contraseña de un usuario con un código de reseteo.✅
 
 ## Endpoints del usuario
 
@@ -28,14 +26,15 @@
 <!-- -   GET - [/business/search] - Buscador -->
 -   GET - [/business/idBusiness] - Retorna información de una empresa en concreto.
 -   PUT - [/business/:idBusiness] - Editar perfil de empresa
--   PUT - [/business/:idBusiness/avatar] - Edita el avatar de una empresa.
--   PUT - [/business/:idBusiness/password] - Edita la contraseña de una empresa.
--   DELETE - [/business/idBusiness] - Borra una empresa
 
 ## Endpoints de review
 
 -   GET - [/review/:idBusiness] - Retorna la review de una empresa en concreto
 -   GET - [/review/:idUser] - Retorna las reviews de un usuario
+-   GET - [/states] - Retorna la tabla de provincias ✅
+-   GET - [/jobs] - Retorna la tabla de trabajos ✅
+-   GET - [/sectors] - Retorna la tabla de sectores ✅
+-   GET - [/salaries] - Retorna la tabla de rango de salarios ✅
 -   POST - [/review/:idBusiness] - Crea un review de una empresa
--   PUT - [/review/:idBusiness/:idComment] - Edita la descripción o el título de un comentario.
--   DELETE - [/review/:idBusiness/:idComment] - Borra un comentario.
+-   PUT - [/review/:idBusiness/:idReview] - Edita la review. (solo las primeras 24h)
+-   DELETE - [/review/:idBusiness/:idReview] - Borra una review.

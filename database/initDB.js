@@ -16,7 +16,7 @@ async function initDB() {
         await connection.query('DROP TABLE IF EXISTS states');
         await connection.query('DROP TABLE IF EXISTS sectors');
         await connection.query('DROP TABLE IF EXISTS users');
-        await connection.query('DROP TABLE IF EXISTS salary_range');
+        await connection.query('DROP TABLE IF EXISTS salaries_range');
 
         console.log('Tablas eliminadas');
 
@@ -56,8 +56,8 @@ async function initDB() {
                 linkedin VARCHAR(255),
                 idUser INT NOT NULL,
                 idSector INT NULL,
-                FOREIGN KEY (idUser) REFERENCES users (id) ON DELETE CASCADE,
-                FOREIGN KEY (idSector) REFERENCES sectors (id) ON DELETE CASCADE,
+                FOREIGN KEY (idUser) REFERENCES users (id), 
+                FOREIGN KEY (idSector) REFERENCES sectors (id),
                 createdAt DATETIME NOT NULL,
                 modifiedAt DATETIME
             )
@@ -76,8 +76,8 @@ async function initDB() {
                 id INT PRIMARY KEY AUTO_INCREMENT,
                 idBusiness INT NOT NULL,
                 idStates INT NOT NULL,
-                FOREIGN KEY (idBusiness) REFERENCES business (id) ON DELETE CASCADE,
-                FOREIGN KEY (idStates) REFERENCES states (id) ON DELETE CASCADE,
+                FOREIGN KEY (idBusiness) REFERENCES business (id),
+                FOREIGN KEY (idStates) REFERENCES states (id),
                 isHeadquartes BOOLEAN DEFAULT false,
                 UNIQUE (idBusiness, idStates),
                 createdAt DATETIME NOT NULL,
@@ -95,7 +95,7 @@ async function initDB() {
         await connection.query(
             `CREATE TABLE salaries_range (
                 id INT PRIMARY KEY AUTO_INCREMENT,
-                name VARCHAR (50) UNIQUE NOT NULL,
+                salary_range VARCHAR (50) UNIQUE NOT NULL,
                 createdAt DATETIME NOT NULL,
                 modifiedAt DATETIME
             )`
@@ -107,10 +107,10 @@ async function initDB() {
                 idUser INT NOT NULL,
                 idJobs INT NOT NULL,
                 idSalaries INT NOT NULL,
-                FOREIGN KEY (idBusiness) REFERENCES business_states (id) ON DELETE CASCADE,
-                FOREIGN KEY (idUser) REFERENCES users (id) ON DELETE CASCADE,
-                FOREIGN KEY (idJobs) REFERENCES jobs (id) ON DELETE CASCADE,
-                FOREIGN KEY (idSalaries) REFERENCES salaries_range (id) ON DELETE CASCADE,
+                FOREIGN KEY (idBusiness) REFERENCES business_states (id),
+                FOREIGN KEY (idUser) REFERENCES users (id),
+                FOREIGN KEY (idJobs) REFERENCES jobs (id),
+                FOREIGN KEY (idSalaries) REFERENCES salaries_range (id),
                 start_year SMALLINT UNSIGNED NOT NULL,
                 end_year SMALLINT UNSIGNED NULL,
                 salary CHAR(1) NOT NULL,
