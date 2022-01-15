@@ -1,8 +1,4 @@
 .env
-<<<<<<< HEAD
-=======
-
->>>>>>> 36c1aeb09a7a4ebd9347143d5ba82762f0d805a3
 static/uploads/
 node_modules/
 
