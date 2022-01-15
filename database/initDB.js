@@ -16,7 +16,7 @@ async function initDB() {
         await connection.query('DROP TABLE IF EXISTS states');
         await connection.query('DROP TABLE IF EXISTS sectors');
         await connection.query('DROP TABLE IF EXISTS users');
-        await connection.query('DROP TABLE IF EXISTS salary_range');
+        await connection.query('DROP TABLE IF EXISTS salaries_range');
 
         console.log('Tablas eliminadas');
 
@@ -95,7 +95,7 @@ async function initDB() {
         await connection.query(
             `CREATE TABLE salaries_range (
                 id INT PRIMARY KEY AUTO_INCREMENT,
-                name VARCHAR (50) UNIQUE NOT NULL,
+                salary_range VARCHAR (50) UNIQUE NOT NULL,
                 createdAt DATETIME NOT NULL,
                 modifiedAt DATETIME
             )`
