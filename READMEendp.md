@@ -31,10 +31,10 @@
 
 -   GET - [/review/:idBusiness] - Retorna la review de una empresa en concreto
 -   GET - [/review/:idUser] - Retorna las reviews de un usuario
--   GET - [/jobs] - Retorna la tabla de trabajos
--   GET - [/sectors] - Retorna la tabla de sectores
--   GET - [/states] - Retorna la tabla de provincias
--   GET - [/salaries] - Retorna la tabla de rango de salarios
+-   GET - [/states] - Retorna la tabla de provincias ✅
+-   GET - [/jobs] - Retorna la tabla de trabajos ✅
+-   GET - [/sectors] - Retorna la tabla de sectores ✅
+-   GET - [/salaries] - Retorna la tabla de rango de salarios ✅
 -   POST - [/review/:idBusiness] - Crea un review de una empresa
 -   PUT - [/review/:idBusiness/:idReview] - Edita la review. (solo las primeras 24h)
 -   DELETE - [/review/:idBusiness/:idReview] - Borra una review.
