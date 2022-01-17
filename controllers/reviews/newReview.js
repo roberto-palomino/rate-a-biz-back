@@ -1,6 +1,6 @@
 const getDB = require('../../database/getDB');
 
-const newReviewSchema = require('../../schemas/newCommentSchema');
+const newReviewSchema = require('../../schemas/newReviewSchema');
 
 const { validate } = require('../../helpers');
 
