@@ -1,10 +1,10 @@
 const getDB = require('../../database/getDB');
 
-const newReviewSchema = require('../../schemas/newReviewSchema');
+const newReviewSchema = require('../../schemas/newCommentSchema');
 
 const { validate } = require('../../helpers');
 
-const newReview = async (req, res, next) => {
+const newRReview = async (req, res, next) => {
     let connection;
 
     try {
@@ -103,7 +103,7 @@ const newReview = async (req, res, next) => {
         }
 
         // Obtenemos el id de la entrada que acabamos de crear.
-        const idReview = newReview.insertId;
+        const idReview = newRReview.insertId;
 
         res.send({
             status: 'ok',
@@ -116,4 +116,4 @@ const newReview = async (req, res, next) => {
     }
 };
 
-module.exports = newReview;
+module.exports = newRReview;
