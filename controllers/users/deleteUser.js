@@ -1,6 +1,10 @@
 const getDB = require('../../database/getDB');
 
-const { deletePhoto, generateRandomString } = require('../../helpers');
+const {
+    deletePhoto,
+    generateRandomString,
+    getRandomNumber,
+} = require('../../helpers');
 
 const deleteUser = async (req, res, next) => {
     let connection;
@@ -31,11 +35,17 @@ const deleteUser = async (req, res, next) => {
         // Anonimizamos el usuario.
         await connection.query(
             `
-            DELETE users FROM users WHERE id = ? 
-            
+            UPDATE users
+                SET password = ?, username = ?, email = ?, avatar = NULL, active = 0, deleted = 1, modifiedAt = ?
+                WHERE id = ?
             `,
-
-            [idUser]
+            [
+                generateRandomString(20),
+                `deleted ${getRandomNumber()}`,
+                `deleted ${getRandomNumber()}`,
+                new Date(),
+                idUser,
+            ]
         );
 
         res.send({

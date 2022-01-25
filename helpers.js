@@ -19,6 +19,12 @@ function generateRandomString(length) {
     return crypto.randomBytes(length).toString('hex');
 }
 
+/*Generamos un número aleatorio*/
+
+function getRandomNumber() {
+    return Math.floor(Math.random() * 1000);
+}
+
 /* Enviamos un email */
 
 async function sendMail({ to, subject, body }) {
@@ -103,4 +109,10 @@ async function deletePhoto(photoName) {
     }
 }
 
-module.exports = { generateRandomString, sendMail, savePhoto, deletePhoto };
+module.exports = {
+    generateRandomString,
+    sendMail,
+    savePhoto,
+    deletePhoto,
+    getRandomNumber,
+};
