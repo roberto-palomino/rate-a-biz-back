@@ -10,7 +10,7 @@ const editUser = async (req, res, next) => {
         const { idUser } = req.params;
 
         // Campos del body que solicitamos y mensaje de error si falta algún campo:
-        const { username, newEmail, role, name, lastname, url_web } = req.body;
+        const { username, newEmail, name, lastname } = req.body;
 
         if (!username && !newEmail) {
             const error = new Error('Faltan campos');
@@ -56,15 +56,18 @@ const editUser = async (req, res, next) => {
         }
 
         // Modificación de datos del perfil:
-        if (role === 'business') {
+
+        if (name) {
             await connection.query(
-                `UPDATE business set name = ?, url_web = ?, modifiedAt = ?`,
-                [name, url_web, new Date()]
+                `UPDATE users SET name = ?, modifiedAt = ? WHERE id = ?`,
+                [name, new Date(), idUser]
             );
-        } else {
+        }
+
+        if (lastname) {
             await connection.query(
-                `UPDATE users SET name = ?, lastname = ?, modifiedAt = ? WHERE id = ?`,
-                [name, lastname, new Date(), idUser]
+                `UPDATE users SET lastname = ?, modifiedAt = ? WHERE id = ?`,
+                [lastname, new Date(), idUser]
             );
         }
 
