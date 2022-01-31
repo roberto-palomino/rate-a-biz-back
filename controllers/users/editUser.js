@@ -10,7 +10,7 @@ const editUser = async (req, res, next) => {
         const { idUser } = req.params;
 
         // Campos del body que solicitamos y mensaje de error si falta algún campo:
-        const { username, newEmail, name, lastname } = req.body;
+        const { username, newEmail, name, lastname, role, url_web } = req.body;
 
         if (!username && !newEmail) {
             const error = new Error('Faltan campos');
@@ -25,7 +25,7 @@ const editUser = async (req, res, next) => {
         );
 
         //Apartado para modificar el email: se comprueba que no esté en uso por otro usuario y
-        // si ya exixte se lanza un mensaje de error:
+        // si ya existe se lanza un mensaje de error:
 
         if (newEmail && newEmail !== users[0].email) {
             const [usersEmail] = await connection.query(
@@ -46,7 +46,8 @@ const editUser = async (req, res, next) => {
             );
         }
 
-        // Modificación del username:
+        // Modificación del username: se comprueba que no esté en uso por otro usuario y
+        // si lo está se lanza mensaje de error:
 
         if (username && username !== users[0].username) {
             await connection.query(
@@ -55,19 +56,17 @@ const editUser = async (req, res, next) => {
             );
         }
 
-        // Modificación de datos del perfil:
+        // Modificación de datos del perfil para ambos roles:
 
-        if (name) {
+        if (role === 'business') {
             await connection.query(
-                `UPDATE users SET name = ?, modifiedAt = ? WHERE id = ?`,
-                [name, new Date(), idUser]
+                `UPDATE business SET name = ?, url_web = ?, modifiedAt = ? WHERE idUser = ?`,
+                [name, url_web, new Date(), idUser]
             );
-        }
-
-        if (lastname) {
+        } else {
             await connection.query(
-                `UPDATE users SET lastname = ?, modifiedAt = ? WHERE id = ?`,
-                [lastname, new Date(), idUser]
+                `UPDATE users SET name = ?, lastname = ?, modifiedAt = ? WHERE id = ?`,
+                [name, lastname, new Date(), idUser]
             );
         }
 

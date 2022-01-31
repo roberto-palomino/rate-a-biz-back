@@ -33,6 +33,16 @@ const deleteUser = async (req, res, next) => {
         }
 
         // Anonimizamos el usuario.
+
+        await connection.query(
+            `UPDATE business SET name = ?, url_web = ? WHERE idUser = ?`,
+            [
+                `deleted (${getRandomNumber()})`,
+                `deleted (${getRandomNumber()})`,
+                idUser,
+            ]
+        );
+
         await connection.query(
             `
             UPDATE users
