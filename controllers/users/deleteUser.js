@@ -32,16 +32,7 @@ const deleteUser = async (req, res, next) => {
             await deletePhoto(users[0].avatar);
         }
 
-        // Anonimizamos el usuario.
-
-        await connection.query(
-            `UPDATE business SET name = ?, url_web = ? WHERE idUser = ?`,
-            [
-                `deleted (${getRandomNumber()})`,
-                `deleted (${getRandomNumber()})`,
-                idUser,
-            ]
-        );
+        // Anonimizamos el usuario:
 
         await connection.query(
             `
