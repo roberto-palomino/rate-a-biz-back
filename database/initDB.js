@@ -103,11 +103,11 @@ async function initDB() {
         await connection.query(
             `CREATE TABLE review (
                 id INT PRIMARY KEY AUTO_INCREMENT,
-                idBusiness INT NOT NULL,
+                idBusiness_states INT NOT NULL,
                 idUser INT NOT NULL,
                 idJobs INT NOT NULL,
                 idSalaries INT NOT NULL,
-                FOREIGN KEY (idBusiness) REFERENCES business_states (id),
+                FOREIGN KEY (idBusiness_states) REFERENCES business_states (id),
                 FOREIGN KEY (idUser) REFERENCES users (id),
                 FOREIGN KEY (idJobs) REFERENCES jobs (id),
                 FOREIGN KEY (idSalaries) REFERENCES salaries_range (id),

@@ -4,6 +4,7 @@ const userExists = require('./userExists');
 const canEditBusiness = require('./canEditBusiness');
 const businessExists = require('./businessExists');
 const businessIsAuth = require('./businessIsAuth');
+const canEditReview = require('./canEditReview');
 
 module.exports = {
     userIsAuth,
@@ -12,4 +13,5 @@ module.exports = {
     businessIsAuth,
     canEditBusiness,
     businessExists,
+    canEditReview,
 };
