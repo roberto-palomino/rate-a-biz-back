@@ -26,6 +26,7 @@ const {
     getSectors,
     getSalaries,
 } = require('./controllers/tables');
+const { newReview } = require('./controllers/reviews');
 
 // Middlewares:
 const { userIsAuth, userExists, canEditUser } = require('./middlewares/');
@@ -104,6 +105,13 @@ app.put(
     canEditUser,
     editBusinessAvatar
 );
+
+/* ##########################
+   ####### REVIEWS ###########
+   ##########################*/
+
+/* Crear una nueva review */
+app.post('./review/:idBusiness', userIsAuth, newReview);
 
 /* ##########################
    ####### TABLAS ###########
