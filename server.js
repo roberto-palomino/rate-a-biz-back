@@ -1,6 +1,7 @@
 require('dotenv').config();
 
 const express = require('express');
+const cors = require('cors');
 const morgan = require('morgan');
 const fileUpload = require('express-fileupload');
 const {
@@ -24,12 +25,15 @@ const {
     getSalaries,
 } = require('./controllers/tables');
 const { newReview } = require('./controllers/reviews');
+const { searchBusiness } = require('./controllers/business');
 
 // Middlewares:
 const { userIsAuth, userExists, canEditUser } = require('./middlewares/');
 
 const app = express();
 const { PORT } = process.env;
+/* Middleware CORS */
+app.use(cors());
 
 /* Middleware que nos da informacion acerca de las peticiones que entran en el servidor */
 app.use(morgan('dev'));
@@ -96,6 +100,12 @@ app.delete('/users/:idUser', userIsAuth, userExists, canEditUser, deleteUser);
 app.post('./review/:idBusiness', userIsAuth, newReview);
 
 /* ##########################
+   ####### Bussines #########
+   ##########################*/
+
+app.get('/bussines', searchBusiness);
+
+/* ##########################
    ####### TABLAS ###########
    ##########################*/
 
@@ -112,7 +122,7 @@ app.get('/sectors', getSectors);
 app.get('/salaries', getSalaries);
 
 /* ##########################
-   ###### MIDDLEWARES  ##########
+   ###### MIDDLEWARES  ######
    ##########################*/
 
 /* Middleware de error */

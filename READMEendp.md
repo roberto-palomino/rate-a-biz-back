@@ -22,19 +22,17 @@
 
 ## Endpoints de la empresa
 
--   GET - [/business] - Retorna información de las empresas (Devuelve el top15)
-<!-- -   GET - [/business/search] - Buscador -->
+-   GET - [/business] - Retorna información de las empresas (Filtramos a nuestro gusto)
 -   GET - [/business/idBusiness] - Retorna información de una empresa en concreto.
 -   PUT - [/business/:idBusiness] - Editar perfil de empresa
 
 ## Endpoints de review
 
--   GET - [/review/:idBusiness] - Retorna la review de una empresa en concreto
+-   GET - [/review/:idBusiness] - Retorna las reviews de una empresa en concreto (filtrable por el usuario)
 -   GET - [/review/:idUser] - Retorna las reviews de un usuario
 -   GET - [/states] - Retorna la tabla de provincias ✅
 -   GET - [/jobs] - Retorna la tabla de trabajos ✅
 -   GET - [/sectors] - Retorna la tabla de sectores ✅
 -   GET - [/salaries] - Retorna la tabla de rango de salarios ✅
 -   POST - [/review/:idBusiness] - Crea un review de una empresa
--   PUT - [/review/:idBusiness/:idReview] - Edita la review. (solo las primeras 24h)
--   DELETE - [/review/:idBusiness/:idReview] - Borra una review.
+-   DELETE - [/review/:idBusiness/:idReview] - Borra una review. (por el admin)
