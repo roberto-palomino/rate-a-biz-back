@@ -2,7 +2,6 @@ require('dotenv').config();
 
 const express = require('express');
 const morgan = require('morgan');
-const path = require('path');
 const fileUpload = require('express-fileupload');
 const cors = require('cors');
 const {
@@ -34,6 +33,7 @@ const { newReview } = require('./controllers/reviews');
 const { userIsAuth, userExists, canEditUser } = require('./middlewares/');
 
 const app = express();
+
 const { PORT, UPLOAD_DIRECTORY } = process.env;
 
 app.use(cors());
@@ -42,7 +42,7 @@ app.use(cors());
 app.use(morgan('dev'));
 /* Middleware que deserializa un body en formato "raw" */
 app.use(express.json());
-
+//  Middleware que permite acceder a la carperta de imágenes
 app.use(express.static(__dirname, UPLOAD_DIRECTORY));
 //Middleware que deserializa un body en formato "form-data" para trabajar con imágenes:
 app.use(fileUpload());
