@@ -15,7 +15,7 @@ const getUser = async (req, res, next) => {
         // Obtenemos todos los datos que me interesan del usuario del cuál
         // se solicita información.
         const [users] = await connection.query(
-            `SELECT id, username, email, avatar, role, createdAt FROM users WHERE id = ?`,
+            `SELECT id, username, email, name, lastname, avatar, role, createdAt FROM users WHERE id = ?`,
             [idUser]
         );
 
@@ -29,6 +29,8 @@ const getUser = async (req, res, next) => {
         // un administrador vamos a agregar información extra.
         if (users[0].id === idReqUser || req.userAuth.role === 'admin') {
             userInfo.email = users[0].email;
+            userInfo.name = users[0].name;
+            userInfo.lastname = users[0].lastname;
             userInfo.role = users[0].role;
             userInfo.createdAt = users[0].createdAt;
         }
