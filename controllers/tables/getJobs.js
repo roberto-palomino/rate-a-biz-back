@@ -7,7 +7,7 @@ const getJobs = async (req, res, next) => {
         connection = await getDB();
 
         /* Obtenemos todos los nombres de los trabajos de nuestra base de datos */
-        const [jobs] = await connection.query(`SELECT name FROM jobs`);
+        const [jobs] = await connection.query(`SELECT id, name FROM jobs`);
 
         /* Enviamos los nombres de los trabajos */
 

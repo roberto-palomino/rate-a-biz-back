@@ -7,8 +7,14 @@ const searchBusiness = async (req, res, next) => {
         connection = await getDB();
 
         /* Obtenemos los query params de las empresas que se seleccionarán */
-        const { idSalaries, idJobs, idBussines_states, order, direction } =
-            req.query;
+        const {
+            idSalaries,
+            idJobs,
+            idBusiness_states,
+            idSector,
+            order,
+            direction,
+        } = req.body;
 
         /* posibles valores para "order" */
         const validOrderOptions = [
@@ -24,7 +30,9 @@ const searchBusiness = async (req, res, next) => {
 
         /* Establecemos el orden por defecto en caso de que no haya query params (undefined)
         o su valor sea incorrecto */
-        const orderBy = validOrderOptions.includes(order) ? order : 'createdAt';
+        const orderBy = validOrderOptions.includes(order)
+            ? order
+            : 'review.createdAt';
 
         /* Lo mismo pero con "direction" */
         const orderDirection = validDirectionOptions.includes(direction)
@@ -35,23 +43,24 @@ const searchBusiness = async (req, res, next) => {
         let business;
 
         /* Si existe algún párametro de filtrado */
-        if (idSalaries | idJobs | idBussines_states) {
+        if (idSalaries | idJobs | idBusiness_states | idSector) {
             [business] = await connection.query(
-                `SELECT * FROM reviews 
-                LEFT JOIN bussines_states ON (idBusiness_states = bussines_states.id)
-                LEFT JOIN bussines ON (bussines.id = idBussines)
-                WHERE idSalaries LIKE ? OR idJobs LIKE ? OR idBussines_states LIKE ?
-                GROUP BY reviews.id
+                `SELECT *, states.name, business.idUser FROM review  
+                 LEFT JOIN business_states ON (idBusiness_states = business_states.id)
+                 LEFT JOIN business ON (review.idBusiness = business.id )
+                 WHERE idSalaries LIKE ? OR idJobs LIKE ? OR idBusiness_states LIKE ? OR idSector LIKE ? 
+                 GROUP BY review.id
                 ORDER BY ${orderBy} ${orderDirection}
                 LIMIT 10`,
-                [idSalaries, idJobs, idBussines_states]
+                [idSalaries, idJobs, idBusiness_states, idSector]
             );
         } else {
             [business] = await connection.query(
-                `SELECT * FROM reviews 
-                LEFT JOIN bussines_states ON (idBusiness_states = bussines_states.id)
-                LEFT JOIN bussines ON (bussines.id = idBussines)
-                GROUP BY reviews.id
+                `SELECT *,review.id, review.description, idStates, business.idUser, states.nameStates FROM review  
+                 LEFT JOIN business_states ON (idBusiness_states = business_states.id)
+                 LEFT JOIN business ON (review.idBusiness = business.id )
+                 LEFT JOIN states ON (idStates = states.id)
+                GROUP BY review.id
                 ORDER BY ${orderBy} ${orderDirection}
                 LIMIT 10`
             );

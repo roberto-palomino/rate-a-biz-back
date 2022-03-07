@@ -42,7 +42,7 @@ const newReview = async (req, res, next) => {
         if (identifier.length > 0) {
             // Creamos la entrada y obtenemos el valor que retorna "connection.query".
             const [newReview] = await connection.query(
-                `INSERT INTO reviews (idBusiness_states, idUser, idJobs, idSalaries, start_year,
+                `INSERT INTO review (idBusiness_states, idUser, idJobs, idSalaries, start_year,
                             end_year,
                             salary,
                             enviroment,
@@ -76,7 +76,7 @@ const newReview = async (req, res, next) => {
                 [idBusiness, idStates]
             );
             await connection.query(
-                `INSERT INTO reviews (idBusiness_states, idUser, idJobs, idSalaries, start_year,
+                `INSERT INTO review (idBusiness_states, idUser, idJobs, idSalaries, start_year,
                             end_year,
                             salary,
                             enviroment,

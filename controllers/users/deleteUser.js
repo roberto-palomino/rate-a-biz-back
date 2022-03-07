@@ -1,6 +1,10 @@
 const getDB = require('../../database/getDB');
 
-const { deletePhoto, generateRandomString } = require('../../helpers');
+const {
+    deletePhoto,
+    generateRandomString,
+    getRandomNumber,
+} = require('../../helpers');
 
 const deleteUser = async (req, res, next) => {
     let connection;
@@ -11,13 +15,13 @@ const deleteUser = async (req, res, next) => {
         const { idUser } = req.params;
 
         // Mensaje de error si el usuario es administrador con id=1
-        if (Number(idUser) === 1) {
+        /*   if (Number(idUser) === 1) {
             const error = new Error(
                 'El administrador principal no puede ser eliminado'
             );
             error.httpStatus = 403;
             throw error;
-        }
+        } */
 
         // Obtenemos el avatar del usuario y si lo tiene se borra:
         const [users] = await connection.query(
@@ -28,14 +32,21 @@ const deleteUser = async (req, res, next) => {
             await deletePhoto(users[0].avatar);
         }
 
-        // Anonimizamos el usuario.
+        // Anonimizamos el usuario:
+
         await connection.query(
             `
-                UPDATE users
-                SET password = ?, username = "[deleted]", email = "[deleted]", avatar = NULL, active = 0, deleted = 1, modifiedAt = ?
+            UPDATE users
+                SET password = ?, username = ?, email = ?, name= NULL, lastname= NULL, avatar = NULL, active = 0, deleted = 1, modifiedAt = ?
                 WHERE id = ?
             `,
-            [generateRandomString(20), new Date(), idUser]
+            [
+                generateRandomString(20),
+                `deleted (${getRandomNumber()})`,
+                `deleted (${getRandomNumber()})`,
+                new Date(),
+                idUser,
+            ]
         );
 
         res.send({

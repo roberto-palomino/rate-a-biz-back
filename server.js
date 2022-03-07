@@ -10,11 +10,15 @@ const {
     validateUser,
     recoverPassword,
     resetUserPassword,
+    getReview,
 } = require('./controllers/commons');
 const {
     getUser,
+    getBusiness,
     editUser,
+    editBusiness,
     editUserAvatar,
+    editBusinessAvatar,
     editUserPass,
     deleteUser,
 } = require('./controllers/users');
@@ -68,7 +72,7 @@ app.put('/password/reset/:recoverCode', resetUserPassword);
 // Obtener información de un usuario.
 app.get('/users/:idUser', userIsAuth, getUser);
 
-// Editar el username y el email de un usuario.
+// Editar el username, el email, el nombre y el apellido de un usuario.
 app.put('/users/:idUser', userIsAuth, userExists, canEditUser, editUser);
 
 // Editar el avatar de un usuario.
@@ -92,18 +96,35 @@ app.put(
 // Anonimizar un usuario sin borrarlo:
 app.delete('/users/:idUser', userIsAuth, userExists, canEditUser, deleteUser);
 
+// Obtener información de una empresa.
+app.get('/business/:idUser', userIsAuth, getBusiness);
+
+// Editar el name, url_web de una empresa.
+app.put('/business/:idUser', userIsAuth, userExists, canEditUser, editBusiness);
+
+// Editar el avatar de una empresa.
+app.put(
+    '/business/:idUser/avatar',
+    userIsAuth,
+    userExists,
+    canEditUser,
+    editBusinessAvatar
+);
+
 /* ##########################
    ####### REVIEWS ###########
    ##########################*/
 
 /* Crear una nueva review */
-app.post('./review/:idBusiness', userIsAuth, newReview);
+app.post('/review/:idBusiness', userIsAuth, newReview);
+
+app.get('/getReview', getReview);
 
 /* ##########################
    ####### Bussines #########
    ##########################*/
 
-app.get('/bussines', searchBusiness);
+app.get('/business', searchBusiness);
 
 /* ##########################
    ####### TABLAS ###########

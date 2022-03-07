@@ -7,7 +7,9 @@ const getSectors = async (req, res, next) => {
         connection = await getDB();
 
         /* Obtenemos todos los nombres de los sectores de nuestra base de datos */
-        const [sectors] = await connection.query(`SELECT name FROM sectors`);
+        const [sectors] = await connection.query(
+            `SELECT id, name FROM sectors`
+        );
 
         /* Enviamos los nombres de los trabajos */
 

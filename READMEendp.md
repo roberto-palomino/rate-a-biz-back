@@ -22,9 +22,12 @@
 
 ## Endpoints de la empresa
 
--   GET - [/business] - Retorna información de las empresas (Filtramos a nuestro gusto)
--   GET - [/business/idBusiness] - Retorna información de una empresa en concreto.
--   PUT - [/business/:idBusiness] - Editar perfil de empresa
+(Los datos se obtienen a través del idUser que es lo que enlaza business con users).
+
+-   GET - [/business] - Retorna información de las empresas (Filtramos a nuestro gusto)✅
+-   GET - [/business/idUser] - Retorna información de una empresa en concreto.✅
+-   PUT - [/business/:idUser] - Editar perfil de empresa.✅
+-   PUT - [/business/:idUser/avatar] - Edita el avatar de una empresa.✅
 
 ## Endpoints de review
 
