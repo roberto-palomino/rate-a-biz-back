@@ -12,7 +12,7 @@ const editBusiness = async (req, res, next) => {
         // Campos del body que solicitamos y mensaje de error si falta algún campo:
         const { username, newEmail, name, url_web } = req.body;
 
-        if (!username && !newEmail) {
+        if (!username && !newEmail && !name && !url_web) {
             const error = new Error('Faltan campos');
             error.httpStatus = 400;
             throw error;

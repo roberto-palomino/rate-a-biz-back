@@ -8,7 +8,7 @@ const getSalaries = async (req, res, next) => {
 
         /* Obtenemos todos los rangos salariales de nuestra base de datos */
         const [salaries] = await connection.query(
-            `SELECT salary_range FROM salaries_range`
+            `SELECT id, salary_range FROM salaries_range`
         );
 
         /* Enviamos los rangos salariales*/

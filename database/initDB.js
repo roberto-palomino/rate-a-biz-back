@@ -66,7 +66,7 @@ async function initDB() {
         await connection.query(
             `CREATE TABLE states (
                 id INT PRIMARY KEY AUTO_INCREMENT,
-                name VARCHAR (50) NOT NULL,
+                nameState VARCHAR (50) NOT NULL,
                 createdAt DATETIME NOT NULL,
                 modifiedAt DATETIME
             )`
@@ -181,7 +181,7 @@ async function initDB() {
         ];
         for (const state of states) {
             await connection.query(
-                `INSERT INTO states (name, createdAt) VALUES (?, ?)`,
+                `INSERT INTO states (nameState, createdAt) VALUES (?, ?)`,
                 [state, new Date()]
             );
         }

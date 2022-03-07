@@ -24,8 +24,7 @@
 
 (Los datos se obtienen a través del idUser que es lo que enlaza business con users).
 
--   GET - [/business] - Retorna información de las empresas (Devuelve el top15)
-<!-- -   GET - [/business/search] - Buscador -->
+-   GET - [/business] - Retorna información de las empresas (Filtramos a nuestro gusto)✅
 -   GET - [/business/idUser] - Retorna información de una empresa en concreto.✅
 -   PUT - [/business/:idUser] - Editar perfil de empresa.✅
 -   PUT - [/business/:idUser/avatar] - Edita el avatar de una empresa.✅
