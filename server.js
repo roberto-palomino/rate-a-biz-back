@@ -24,6 +24,8 @@ const {
     getSalaries,
 } = require('./controllers/tables');
 
+const { newReview } = require('./controllers/reviews');
+
 // Middlewares:
 const { userIsAuth, userExists, canEditUser } = require('./middlewares/');
 
@@ -86,6 +88,16 @@ app.put(
 
 // Anonimizar un usuario sin borrarlo:
 app.delete('/users/:idUser', userIsAuth, userExists, canEditUser, deleteUser);
+
+/*
+####################
+###### REVIEWS######
+####################
+*/
+
+//crear una review:
+
+app.post('/review/:idBusiness', userIsAuth, newReview);
 
 /* ##########################
    ####### TABLAS ###########
