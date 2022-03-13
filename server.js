@@ -3,6 +3,7 @@ require('dotenv').config();
 const express = require('express');
 const morgan = require('morgan');
 const fileUpload = require('express-fileupload');
+const cors = require('cors');
 const {
     login,
     signUp,
@@ -12,8 +13,11 @@ const {
 } = require('./controllers/commons');
 const {
     getUser,
+    getBusiness,
     editUser,
+    editBusiness,
     editUserAvatar,
+    editBusinessAvatar,
     editUserPass,
     deleteUser,
 } = require('./controllers/users');
@@ -23,19 +27,22 @@ const {
     getSectors,
     getSalaries,
 } = require('./controllers/tables');
-
-const { newReview } = require('./controllers/reviews');
+const { newReview, deleteReview } = require('./controllers/reviews');
 
 // Middlewares:
 const { userIsAuth, userExists, canEditUser } = require('./middlewares/');
 
 const app = express();
-const { PORT } = process.env;
 
+const { PORT, UPLOAD_DIRECTORY } = process.env;
+
+app.use(cors());
 /* Middleware que nos da informacion acerca de las peticiones que entran en el servidor */
 app.use(morgan('dev'));
 /* Middleware que deserializa un body en formato "raw" */
 app.use(express.json());
+//  Middleware que permite acceder a la carperta de imágenes
+app.use(express.static(__dirname, UPLOAD_DIRECTORY));
 //Middleware que deserializa un body en formato "form-data" para trabajar con imágenes:
 app.use(fileUpload());
 
@@ -65,7 +72,7 @@ app.put('/password/reset/:recoverCode', resetUserPassword);
 // Obtener información de un usuario.
 app.get('/users/:idUser', userIsAuth, getUser);
 
-// Editar el username y el email de un usuario.
+// Editar el username, el email, el nombre y el apellido de un usuario.
 app.put('/users/:idUser', userIsAuth, userExists, canEditUser, editUser);
 
 // Editar el avatar de un usuario.
@@ -88,6 +95,20 @@ app.put(
 
 // Anonimizar un usuario sin borrarlo:
 app.delete('/users/:idUser', userIsAuth, userExists, canEditUser, deleteUser);
+// Obtener información de una empresa.
+app.get('/business/:idUser', userIsAuth, getBusiness);
+
+// Editar el name, url_web de una empresa.
+app.put('/business/:idUser', userIsAuth, userExists, canEditUser, editBusiness);
+
+// Editar el avatar de una empresa.
+app.put(
+    '/business/:idUser/avatar',
+    userIsAuth,
+    userExists,
+    canEditUser,
+    editBusinessAvatar
+);
 
 /*
 ####################
@@ -98,6 +119,10 @@ app.delete('/users/:idUser', userIsAuth, userExists, canEditUser, deleteUser);
 //crear una review:
 
 app.post('/review/:idBusiness', userIsAuth, newReview);
+
+//Borrar una review:
+
+app.delete('/review/:idBusiness', userIsAuth, deleteReview);
 
 /* ##########################
    ####### TABLAS ###########
