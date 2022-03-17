@@ -27,7 +27,8 @@ const {
     getSectors,
     getSalaries,
 } = require('./controllers/tables');
-const { newReview } = require('./controllers/reviews');
+
+const { newReview, deleteReview } = require('./controllers/reviews');
 
 // Middlewares:
 const { userIsAuth, userExists, canEditUser } = require('./middlewares/');
@@ -38,6 +39,9 @@ const { PORT, UPLOAD_DIRECTORY } = process.env;
 
 app.use(cors());
 
+const { PORT, UPLOAD_DIRECTORY } = process.env;
+
+app.use(cors());
 /* Middleware que nos da informacion acerca de las peticiones que entran en el servidor */
 app.use(morgan('dev'));
 /* Middleware que deserializa un body en formato "raw" */
@@ -96,6 +100,34 @@ app.put(
 
 // Anonimizar un usuario sin borrarlo:
 app.delete('/users/:idUser', userIsAuth, userExists, canEditUser, deleteUser);
+// Obtener información de una empresa.
+app.get('/business/:idUser', userIsAuth, getBusiness);
+
+// Editar el name, url_web de una empresa.
+app.put('/business/:idUser', userIsAuth, userExists, canEditUser, editBusiness);
+
+// Editar el avatar de una empresa.
+app.put(
+    '/business/:idUser/avatar',
+    userIsAuth,
+    userExists,
+    canEditUser,
+    editBusinessAvatar
+);
+
+/*
+####################
+###### REVIEWS######
+####################
+*/
+
+//crear una review:
+
+app.post('/review/:idBusiness', userIsAuth, newReview);
+
+//Borrar una review:
+
+app.delete('/review/:idBusiness', userIsAuth, deleteReview);
 
 // Obtener información de una empresa.
 app.get('/business/:idUser', userIsAuth, getBusiness);
