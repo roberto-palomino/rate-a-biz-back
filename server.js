@@ -27,12 +27,17 @@ const {
     getSectors,
     getSalaries,
 } = require('./controllers/tables');
+
 const { newReview, deleteReview } = require('./controllers/reviews');
 
 // Middlewares:
 const { userIsAuth, userExists, canEditUser } = require('./middlewares/');
 
 const app = express();
+
+const { PORT, UPLOAD_DIRECTORY } = process.env;
+
+app.use(cors());
 
 const { PORT, UPLOAD_DIRECTORY } = process.env;
 
@@ -123,6 +128,28 @@ app.post('/review/:idBusiness', userIsAuth, newReview);
 //Borrar una review:
 
 app.delete('/review/:idBusiness', userIsAuth, deleteReview);
+
+// Obtener información de una empresa.
+app.get('/business/:idUser', userIsAuth, getBusiness);
+
+// Editar el name, url_web de una empresa.
+app.put('/business/:idUser', userIsAuth, userExists, canEditUser, editBusiness);
+
+// Editar el avatar de una empresa.
+app.put(
+    '/business/:idUser/avatar',
+    userIsAuth,
+    userExists,
+    canEditUser,
+    editBusinessAvatar
+);
+
+/* ##########################
+   ####### REVIEWS ###########
+   ##########################*/
+
+/* Crear una nueva review */
+app.post('./review/:idBusiness', userIsAuth, newReview);
 
 /* ##########################
    ####### TABLAS ###########

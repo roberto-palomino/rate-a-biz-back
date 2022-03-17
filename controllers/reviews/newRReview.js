@@ -1,10 +1,10 @@
 const getDB = require('../../database/getDB');
 
-const newReviewSchema = require('../../schemas/newReviewSchema');
+const newReviewSchema = require('../../schemas/newCommentSchema');
 
 const { validate } = require('../../helpers');
 
-const newReview = async (req, res, next) => {
+const newRReview = async (req, res, next) => {
     let connection;
 
     try {
@@ -42,7 +42,7 @@ const newReview = async (req, res, next) => {
         if (identifier.length > 0) {
             // Creamos la entrada y obtenemos el valor que retorna "connection.query".
             const [newReview] = await connection.query(
-                `INSERT INTO review (idBusiness_states, idUser, idJobs, idSalaries, start_year,
+                `INSERT INTO reviews (idBusiness_states, idUser, idJobs, idSalaries, start_year,
                             end_year,
                             salary,
                             enviroment,
@@ -76,7 +76,7 @@ const newReview = async (req, res, next) => {
                 [idBusiness, idStates]
             );
             await connection.query(
-                `INSERT INTO review (idBusiness_states, idUser, idJobs, idSalaries, start_year,
+                `INSERT INTO reviews (idBusiness_states, idUser, idJobs, idSalaries, start_year,
                             end_year,
                             salary,
                             enviroment,
@@ -103,7 +103,7 @@ const newReview = async (req, res, next) => {
         }
 
         // Obtenemos el id de la entrada que acabamos de crear.
-        const idReview = newReview.insertId;
+        const idReview = newRReview.insertId;
 
         res.send({
             status: 'ok',
@@ -116,4 +116,4 @@ const newReview = async (req, res, next) => {
     }
 };
 
-module.exports = newReview;
+module.exports = newRReview;

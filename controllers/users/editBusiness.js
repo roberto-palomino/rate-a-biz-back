@@ -1,6 +1,6 @@
 const getDB = require('../../database/getDB');
 
-const editUser = async (req, res, next) => {
+const editBusiness = async (req, res, next) => {
     let connection;
 
     try {
@@ -10,9 +10,9 @@ const editUser = async (req, res, next) => {
         const { idUser } = req.params;
 
         // Campos del body que solicitamos y mensaje de error si falta algún campo:
-        const { username, newEmail, name, lastname } = req.body;
+        const { username, newEmail, name, url_web } = req.body;
 
-        if (!username && !newEmail) {
+        if (!username && !newEmail && !name && !url_web) {
             const error = new Error('Faltan campos');
             error.httpStatus = 400;
             throw error;
@@ -59,8 +59,8 @@ const editUser = async (req, res, next) => {
         // Modificación de datos del perfil:
 
         await connection.query(
-            `UPDATE users SET name = ?, lastname = ?, modifiedAt = ? WHERE id = ?`,
-            [name, lastname, new Date(), idUser]
+            `UPDATE business SET name = ?, url_web = ?, modifiedAt = ? WHERE idUser = ?`,
+            [name, url_web, new Date(), idUser]
         );
 
         res.send({
@@ -74,4 +74,4 @@ const editUser = async (req, res, next) => {
     }
 };
 
-module.exports = editUser;
+module.exports = editBusiness;

@@ -1,6 +1,6 @@
 const getDB = require('../../database/getDB');
 
-const getUser = async (req, res, next) => {
+const getBusiness = async (req, res, next) => {
     let connection;
 
     try {
@@ -12,25 +12,41 @@ const getUser = async (req, res, next) => {
         // Obtenemos el id del usuario que realiza la request.
         const idReqUser = req.userAuth.id;
 
-        // Obtenemos todos los datos que me interesan del usuario del cuál
+        // Obtenemos todos los datos que me interesan de la empresa de la cuál
         // se solicita información.
-        const [users] = await connection.query(
-            `SELECT id, username, email, name, lastname, avatar, role, createdAt FROM users WHERE id = ?`,
+
+        const [business] = await connection.query(
+            `SELECT name, url_web FROM business WHERE idUser = ?`,
             [idUser]
         );
 
-        // Objeto con la información básica del usuario.
+        // Objeto con la información básica de la empresa.
+
+        const businessInfo = {
+            name: business[0].name,
+            url_web: business[0].url_web,
+        };
+
+        // Obtenemos todos los datos registrados en la tabla de usuario/empresa del cuál
+        // se solicita información.
+
+        const [users] = await connection.query(
+            `SELECT id, username, email, avatar, role, createdAt FROM users WHERE id = ?`,
+            [idUser]
+        );
+
+        // Objeto con la información básica como usuario/empresa.
+
         const userInfo = {
             username: users[0].username,
             avatar: users[0].avatar,
         };
 
-        // Si el usuario que realiza la request es el dueño de dicho usuario o si es
+        // Si el usuario que realiza la request es el dueño de dicho usuario/empresa o si es
         // un administrador vamos a agregar información extra.
+
         if (users[0].id === idReqUser || req.userAuth.role === 'admin') {
             userInfo.email = users[0].email;
-            userInfo.name = users[0].name;
-            userInfo.lastname = users[0].lastname;
             userInfo.role = users[0].role;
             userInfo.createdAt = users[0].createdAt;
         }
@@ -38,7 +54,8 @@ const getUser = async (req, res, next) => {
         res.send({
             status: 'ok',
             data: {
-                user: userInfo,
+                businessInfo: businessInfo,
+                userInfo: userInfo,
             },
         });
     } catch (error) {
@@ -48,4 +65,4 @@ const getUser = async (req, res, next) => {
     }
 };
 
-module.exports = getUser;
+module.exports = getBusiness;
