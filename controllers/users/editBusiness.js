@@ -10,13 +10,28 @@ const editBusiness = async (req, res, next) => {
         const { idUser } = req.params;
 
         // Campos del body que solicitamos y mensaje de error si falta algún campo:
-        const { username, newEmail, name, url_web } = req.body;
+        const {
+            username,
+            newEmail,
+            name,
+            description,
+            headquarter,
+            url_web,
+            sector,
+        } = req.body;
 
-        if (!username && !newEmail && !name && !url_web) {
-            const error = new Error('Faltan campos');
-            error.httpStatus = 400;
-            throw error;
-        }
+        // if (
+        //     !username &&
+        //     !newEmail &&
+        //     !name &&
+        //     !headquarter &&
+        //     !url_web &&
+        //     !sector
+        // ) {
+        //     const error = new Error('Faltan campos');
+        //     error.httpStatus = 400;
+        //     throw error;
+        // }
 
         // Pedimos email y username del usuario:
         const [users] = await connection.query(
@@ -59,8 +74,16 @@ const editBusiness = async (req, res, next) => {
         // Modificación de datos del perfil:
 
         await connection.query(
-            `UPDATE business SET name = ?, url_web = ?, modifiedAt = ? WHERE idUser = ?`,
-            [name, url_web, new Date(), idUser]
+            `UPDATE business SET name = ?, description = ?, headquarter = ?, sector = ?, url_web = ?, modifiedAt = ? WHERE idUser = ?`,
+            [
+                name,
+                description,
+                headquarter,
+                sector,
+                url_web,
+                new Date(),
+                idUser,
+            ]
         );
 
         res.send({

@@ -16,7 +16,7 @@ const getBusiness = async (req, res, next) => {
         // se solicita información.
 
         const [business] = await connection.query(
-            `SELECT name, url_web FROM business WHERE idUser = ?`,
+            `SELECT name, description, headquarter, sector, url_web FROM business WHERE idUser = ?`,
             [idUser]
         );
 
@@ -24,7 +24,10 @@ const getBusiness = async (req, res, next) => {
 
         const businessInfo = {
             name: business[0].name,
+            description: business[0].description,
             url_web: business[0].url_web,
+            headquarter: business[0].headquarter,
+            sector: business[0].sector,
         };
 
         // Obtenemos todos los datos registrados en la tabla de usuario/empresa del cuál
