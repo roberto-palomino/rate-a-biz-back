@@ -27,17 +27,12 @@ const {
     getSectors,
     getSalaries,
 } = require('./controllers/tables');
-
 const { newReview, deleteReview } = require('./controllers/reviews');
 
 // Middlewares:
 const { userIsAuth, userExists, canEditUser } = require('./middlewares/');
 
 const app = express();
-
-const { PORT, UPLOAD_DIRECTORY } = process.env;
-
-app.use(cors());
 
 const { PORT, UPLOAD_DIRECTORY } = process.env;
 

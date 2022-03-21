@@ -45,7 +45,7 @@ const searchBusiness = async (req, res, next) => {
         /* Si existe algún párametro de filtrado */
         if (idSalaries | idJobs | idBusiness_states | idSector) {
             [business] = await connection.query(
-                `SELECT *, states.name, business.idUser FROM review  
+                `SELECT *, states.nameState, business.idUser FROM review  
                  LEFT JOIN business_states ON (idBusiness_states = business_states.id)
                  LEFT JOIN business ON (review.idBusiness = business.id )
                  WHERE idSalaries LIKE ? OR idJobs LIKE ? OR idBusiness_states LIKE ? OR idSector LIKE ? 
@@ -56,7 +56,7 @@ const searchBusiness = async (req, res, next) => {
             );
         } else {
             [business] = await connection.query(
-                `SELECT *,review.id, review.description, idStates, business.idUser, states.nameStates FROM review  
+                `SELECT *,review.id, review.description, idStates, business.idUser, states.nameState FROM review  
                  LEFT JOIN business_states ON (idBusiness_states = business_states.id)
                  LEFT JOIN business ON (review.idBusiness = business.id )
                  LEFT JOIN states ON (idStates = states.id)

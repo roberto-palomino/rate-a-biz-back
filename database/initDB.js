@@ -52,7 +52,9 @@ async function initDB() {
                 id INT PRIMARY KEY AUTO_INCREMENT,
                 name VARCHAR(75),
                 description VARCHAR(250),
+                headquarter VARCHAR(50),
                 url_web VARCHAR(255),
+                sector VARCHAR(75),
                 linkedin VARCHAR(255),
                 idUser INT NOT NULL,
                 idSector INT NULL,
@@ -183,6 +185,33 @@ async function initDB() {
             await connection.query(
                 `INSERT INTO states (nameState, createdAt) VALUES (?, ?)`,
                 [state, new Date()]
+            );
+        }
+
+        const sectors = [
+            'Agricultura y ganadería',
+            'Bienes de consumo',
+            'Comercio electrónico',
+            'Comercio y establecimientos',
+            'Construcción',
+            'Deporte y ocio',
+            'Energía y medio ambiente',
+            'Finanzas, seguros y bienes inmuebles ',
+            'Internet',
+            'Logística y transporte',
+            'Medios de comunicación y marketing ',
+            'Metalurgia y electrónica',
+            'Productos químicos y materias primas ',
+            'Salud e industria farmacéutica',
+            'Servicios',
+            'Tecnología y telecomunicaciones',
+            'Turismo y hostelería',
+            'Otros',
+        ];
+        for (const sector of sectors) {
+            await connection.query(
+                `INSERT INTO sectors (name, createdAt) VALUES (?, ?)`,
+                [sector, new Date()]
             );
         }
     } catch (err) {
