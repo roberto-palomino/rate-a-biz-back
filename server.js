@@ -121,7 +121,7 @@ app.post('/review/:idBusiness', userIsAuth, newReview);
 ####### Bussines #########
 ##########################*/
 
-app.get('/business', searchBusiness);
+app.post('/business', searchBusiness);
 
 app.get('/getTopBusiness', getTopBusiness);
 /* ##########################

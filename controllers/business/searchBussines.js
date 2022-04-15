@@ -7,14 +7,7 @@ const searchBusiness = async (req, res, next) => {
         connection = await getDB();
 
         /* Obtenemos los query params de las empresas que se seleccionarán */
-        const {
-            idSalaries,
-            idJobs,
-            idBusiness_states,
-            idSector,
-            order,
-            direction,
-        } = req.body;
+        const { idSalaries, idJobs, idStates, orderBy, direction } = req.body;
 
         /* posibles valores para "order" */
         const validOrderOptions = [
@@ -30,8 +23,8 @@ const searchBusiness = async (req, res, next) => {
 
         /* Establecemos el orden por defecto en caso de que no haya query params (undefined)
         o su valor sea incorrecto */
-        const orderBy = validOrderOptions.includes(order)
-            ? order
+        const order = validOrderOptions.includes(orderBy)
+            ? orderBy
             : 'review.createdAt';
 
         /* Lo mismo pero con "direction" */
@@ -43,7 +36,7 @@ const searchBusiness = async (req, res, next) => {
         let business;
 
         /* Variable donde almacenamos el top de empresas */
-        let topBusiness;
+
         /* 
         [topBusiness] = await connection.query(
             `SELECT idBusiness, avg(enviroment), avg(salary),avg(oportunities), avg(conciliation), avg(enviroment+salary+oportunities+conciliation)/4 AS votes 
@@ -54,17 +47,36 @@ limit 2`
         ); */
 
         /* Si existe algún párametro de filtrado */
-        if (idSalaries | idJobs | idBusiness_states | idSector) {
+        if (idSalaries | idJobs | idStates) {
+            let idBusiness_states;
+
+            [idBusiness_states] = await connection.query(
+                `SELECT id FROM business_states
+                WHERE idStates LIKE ?`,
+                [idStates]
+            );
+            let ids = [];
+
+            ids = idBusiness_states.map((id) => [...ids, id.id]);
+            console.log('orderBy en back', orderBy);
+            console.log('order en back', order);
+
             [business] = await connection.query(
-                `SELECT *, states.name, business.idUser FROM review  
+                `SELECT *, states.nameStates, business.idUser, jobs.name as job, business.name, review.description, salary_range FROM review  
                  LEFT JOIN business_states ON (idBusiness_states = business_states.id)
                  LEFT JOIN business ON (review.idBusiness = business.id )
-                 WHERE idSalaries LIKE ? OR idJobs LIKE ? OR idBusiness_states LIKE ? OR idSector LIKE ? 
+                 LEFT JOIN states ON (business_states.idStates = states.id)
+                 LEFT JOIN jobs ON (review.idJobs = jobs.id)
+                 LEFT JOIN salaries_range ON (review.idSalaries = salaries_range.id)
+                 WHERE -1=-1 ${idJobs ? `AND idJobs IN (${idJobs})  ` : ''}${
+                    idStates ? `AND idBusiness_states IN (${ids})` : ''
+                }${idSalaries ? ` AND idSalaries IN (${idSalaries})` : ''}
                  GROUP BY review.id
-                ORDER BY ${orderBy} ${orderDirection}
-                LIMIT 10`,
-                [idSalaries, idJobs, idBusiness_states, idSector]
+                ORDER BY ${order} ${orderDirection}
+               
+                `
             );
+            console.log(business);
         } else {
             [business] = await connection.query(
                 `SELECT *,review.id, review.description, idStates, business.idUser, states.nameStates FROM review  
@@ -72,8 +84,8 @@ limit 2`
                  LEFT JOIN business ON (review.idBusiness = business.id )
                  LEFT JOIN states ON (idStates = states.id)
                 GROUP BY review.id
-                ORDER BY ${orderBy} ${orderDirection}
-                LIMIT 10`
+                ORDER BY ${order} ${orderDirection}
+                `
             );
         }
 
