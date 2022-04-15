@@ -4,7 +4,6 @@ const express = require('express');
 const cors = require('cors');
 const morgan = require('morgan');
 const fileUpload = require('express-fileupload');
-const cors = require('cors');
 const {
     login,
     signUp,
@@ -35,7 +34,6 @@ const { searchBusiness, getTopBusiness } = require('./controllers/business');
 const { userIsAuth, userExists, canEditUser } = require('./middlewares/');
 
 const app = express();
-const { PORT } = process.env;
 /* Middleware CORS */
 app.use(cors());
 
@@ -124,10 +122,6 @@ app.put(
 //crear una review:
 
 app.post('/review/:idBusiness', userIsAuth, newReview);
-
-//Borrar una review:
-
-app.delete('/review/:idBusiness', userIsAuth, deleteReview);
 
 // Obtener información de una empresa.
 app.get('/business/:idUser', userIsAuth, getBusiness);

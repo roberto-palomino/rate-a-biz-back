@@ -74,7 +74,6 @@ const editBusiness = async (req, res, next) => {
         // Modificación de datos del perfil:
 
         await connection.query(
-<<<<<<< HEAD
             `UPDATE business SET name = ?, description = ?, headquarter = ?, sector = ?, url_web = ?, modifiedAt = ? WHERE idUser = ?`,
             [
                 name,
@@ -85,10 +84,6 @@ const editBusiness = async (req, res, next) => {
                 new Date(),
                 idUser,
             ]
-=======
-            `UPDATE business SET name = ?, url_web = ?, modifiedAt = ? WHERE idUser = ?`,
-            [name, url_web, new Date(), idUser]
->>>>>>> search
         );
 
         res.send({
