@@ -8,7 +8,7 @@ const getStates = async (req, res, next) => {
 
         /* Obtenemos todos los nombres de provincias de nuestra base de datos */
         const [states] = await connection.query(
-            `SELECT id, nameState FROM states`
+            `SELECT id, nameStates FROM states`
         );
 
         /* Enviamos los nombres de las provincias */
