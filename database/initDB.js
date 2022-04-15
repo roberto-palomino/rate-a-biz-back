@@ -66,7 +66,7 @@ async function initDB() {
         await connection.query(
             `CREATE TABLE states (
                 id INT PRIMARY KEY AUTO_INCREMENT,
-                nameState VARCHAR (50) NOT NULL,
+                nameStates VARCHAR (50) NOT NULL,
                 createdAt DATETIME NOT NULL,
                 modifiedAt DATETIME
             )`
@@ -113,10 +113,10 @@ async function initDB() {
                 FOREIGN KEY (idSalaries) REFERENCES salaries_range (id),
                 start_year SMALLINT UNSIGNED NOT NULL,
                 end_year SMALLINT UNSIGNED NULL,
-                salary CHAR(1) NOT NULL,
-                enviroment CHAR(1) NOT NULL,
-                conciliation CHAR(1) NOT NULL,
-                oportunities CHAR(1) NOT NULL,
+                salary INT NOT NULL,
+                enviroment INT NOT NULL,
+                conciliation INT NOT NULL,
+                oportunities INT NOT NULL,
                 title VARCHAR (50) NOT NULL,
                 description VARCHAR (500) NOT NULL,  
                 createdAt DATETIME NOT NULL,

@@ -42,6 +42,17 @@ const searchBusiness = async (req, res, next) => {
         /* Variable donde almacenamos las empresas */
         let business;
 
+        /* Variable donde almacenamos el top de empresas */
+        let topBusiness;
+        /* 
+        [topBusiness] = await connection.query(
+            `SELECT idBusiness, avg(enviroment), avg(salary),avg(oportunities), avg(conciliation), avg(enviroment+salary+oportunities+conciliation)/4 AS votes 
+FROM review
+GROUP BY idBusiness
+ORDER BY votes desc
+limit 2`
+        ); */
+
         /* Si existe algún párametro de filtrado */
         if (idSalaries | idJobs | idBusiness_states | idSector) {
             [business] = await connection.query(

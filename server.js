@@ -10,7 +10,6 @@ const {
     validateUser,
     recoverPassword,
     resetUserPassword,
-    getReview,
 } = require('./controllers/commons');
 const {
     getUser,
@@ -29,7 +28,7 @@ const {
     getSalaries,
 } = require('./controllers/tables');
 const { newReview } = require('./controllers/reviews');
-const { searchBusiness } = require('./controllers/business');
+const { searchBusiness, getTopBusiness } = require('./controllers/business');
 
 // Middlewares:
 const { userIsAuth, userExists, canEditUser } = require('./middlewares/');
@@ -118,14 +117,13 @@ app.put(
 /* Crear una nueva review */
 app.post('/review/:idBusiness', userIsAuth, newReview);
 
-app.get('/getReview', getReview);
-
 /* ##########################
-   ####### Bussines #########
-   ##########################*/
+####### Bussines #########
+##########################*/
 
 app.get('/business', searchBusiness);
 
+app.get('/getTopBusiness', getTopBusiness);
 /* ##########################
    ####### TABLAS ###########
    ##########################*/
