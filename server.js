@@ -1,9 +1,9 @@
 require('dotenv').config();
 
 const express = require('express');
+const cors = require('cors');
 const morgan = require('morgan');
 const fileUpload = require('express-fileupload');
-const cors = require('cors');
 const {
     login,
     signUp,
@@ -27,12 +27,15 @@ const {
     getSectors,
     getSalaries,
 } = require('./controllers/tables');
-const { newReview, deleteReview } = require('./controllers/reviews');
+const { newReview } = require('./controllers/reviews');
+const { searchBusiness, getTopBusiness } = require('./controllers/business');
 
 // Middlewares:
 const { userIsAuth, userExists, canEditUser } = require('./middlewares/');
 
 const app = express();
+/* Middleware CORS */
+app.use(cors());
 
 const { PORT, UPLOAD_DIRECTORY } = process.env;
 
@@ -120,9 +123,20 @@ app.put(
 
 app.post('/review/:idBusiness', userIsAuth, newReview);
 
-//Borrar una review:
+// Obtener información de una empresa.
+app.get('/business/:idUser', userIsAuth, getBusiness);
 
-app.delete('/review/:idBusiness', userIsAuth, deleteReview);
+// Editar el name, url_web de una empresa.
+app.put('/business/:idUser', userIsAuth, userExists, canEditUser, editBusiness);
+
+// Editar el avatar de una empresa.
+app.put(
+    '/business/:idUser/avatar',
+    userIsAuth,
+    userExists,
+    canEditUser,
+    editBusinessAvatar
+);
 
 // Obtener información de una empresa.
 app.get('/business/:idUser', userIsAuth, getBusiness);
@@ -144,8 +158,15 @@ app.put(
    ##########################*/
 
 /* Crear una nueva review */
-app.post('./review/:idBusiness', userIsAuth, newReview);
+app.post('/review/:idBusiness', userIsAuth, newReview);
 
+/* ##########################
+####### Bussines #########
+##########################*/
+
+app.post('/business', searchBusiness);
+
+app.get('/getTopBusiness', getTopBusiness);
 /* ##########################
    ####### TABLAS ###########
    ##########################*/
@@ -163,7 +184,7 @@ app.get('/sectors', getSectors);
 app.get('/salaries', getSalaries);
 
 /* ##########################
-   ###### MIDDLEWARES  ##########
+   ###### MIDDLEWARES  ######
    ##########################*/
 
 /* Middleware de error */
