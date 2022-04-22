@@ -106,6 +106,7 @@ async function initDB() {
             `CREATE TABLE review (
                 id INT PRIMARY KEY AUTO_INCREMENT,
                 idBusiness_states INT NOT NULL,
+                idBusiness INT NOT NULL,
                 idUser INT NOT NULL,
                 idJobs INT NOT NULL,
                 idSalaries INT NOT NULL,
