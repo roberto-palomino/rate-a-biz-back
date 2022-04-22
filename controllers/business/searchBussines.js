@@ -47,7 +47,7 @@ limit 2`
         ); */
 
         /* Si existe algún párametro de filtrado */
-        if (idSalaries | idJobs | idStates) {
+        if (idSalaries | idJobs | idStates | orderBy | direction) {
             let idBusiness_states;
 
             [idBusiness_states] = await connection.query(
@@ -59,15 +59,16 @@ limit 2`
 
             ids = idBusiness_states.map((id) => [...ids, id.id]);
             console.log('orderBy en back', orderBy);
-            console.log('order en back', order);
+            console.log('order en back', orderDirection);
 
             [business] = await connection.query(
-                `SELECT *, states.nameStates, business.idUser, jobs.name as job, business.name, review.description, salary_range FROM review  
+                `SELECT *, users.avatar, states.nameStates, business.idUser, jobs.name as job, business.name, review.description, salary_range FROM review  
                  LEFT JOIN business_states ON (idBusiness_states = business_states.id)
                  LEFT JOIN business ON (review.idBusiness = business.id )
                  LEFT JOIN states ON (business_states.idStates = states.id)
                  LEFT JOIN jobs ON (review.idJobs = jobs.id)
                  LEFT JOIN salaries_range ON (review.idSalaries = salaries_range.id)
+                 LEFT JOIN users ON (business.idUser = users.id)
                  WHERE -1=-1 ${idJobs ? `AND idJobs IN (${idJobs})  ` : ''}${
                     idStates ? `AND idBusiness_states IN (${ids})` : ''
                 }${idSalaries ? ` AND idSalaries IN (${idSalaries})` : ''}
@@ -79,12 +80,14 @@ limit 2`
             console.log(business);
         } else {
             [business] = await connection.query(
-                `SELECT *,review.id, review.description, idStates, business.idUser, states.nameStates FROM review  
+                `SELECT *, users.avatar,review.id, review.description, idStates, business.idUser, states.nameStates FROM review  
                  LEFT JOIN business_states ON (idBusiness_states = business_states.id)
                  LEFT JOIN business ON (review.idBusiness = business.id )
                  LEFT JOIN states ON (idStates = states.id)
+                 LEFT JOIN users ON (business.idUser = users.id)
                 GROUP BY review.id
                 ORDER BY ${order} ${orderDirection}
+                LIMIT 15
                 `
             );
         }

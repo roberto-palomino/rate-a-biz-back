@@ -105,6 +105,7 @@ async function initDB() {
         await connection.query(
             `CREATE TABLE review (
                 id INT PRIMARY KEY AUTO_INCREMENT,
+                idBusiness INT NOT NULL,
                 idBusiness_states INT NOT NULL,
                 idUser INT NOT NULL,
                 idJobs INT NOT NULL,
