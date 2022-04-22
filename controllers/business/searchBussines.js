@@ -80,7 +80,7 @@ limit 2`
             console.log(business);
         } else {
             [business] = await connection.query(
-                `SELECT *, users.avatar,review.id, review.description, idStates, business.idUser, states.nameStates FROM review  
+                `SELECT *,business.name, users.avatar,review.id, review.description, idStates, business.idUser, states.nameStates FROM review  
                  LEFT JOIN business_states ON (idBusiness_states = business_states.id)
                  LEFT JOIN business ON (review.idBusiness = business.id )
                  LEFT JOIN states ON (idStates = states.id)
