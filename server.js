@@ -39,7 +39,6 @@ app.use(cors());
 
 const { PORT, UPLOAD_DIRECTORY } = process.env;
 
-app.use(cors());
 /* Middleware que nos da informacion acerca de las peticiones que entran en el servidor */
 app.use(morgan('dev'));
 /* Middleware que deserializa un body en formato "raw" */
@@ -99,7 +98,7 @@ app.put(
 // Anonimizar un usuario sin borrarlo:
 app.delete('/users/:idUser', userIsAuth, userExists, canEditUser, deleteUser);
 // Obtener información de una empresa.
-app.get('/business/:idUser', userIsAuth, getBusiness);
+app.get('/business/:idUser', getBusiness);
 
 // Editar el name, url_web de una empresa.
 app.put('/business/:idUser', userIsAuth, userExists, canEditUser, editBusiness);
@@ -124,7 +123,7 @@ app.put(
 app.post('/review/:idBusiness', userIsAuth, newReview);
 
 // Obtener información de una empresa.
-app.get('/business/:idUser', userIsAuth, getBusiness);
+app.get('/business/:idUser', getBusiness);
 
 // Editar el name, url_web de una empresa.
 app.put('/business/:idUser', userIsAuth, userExists, canEditUser, editBusiness);

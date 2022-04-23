@@ -10,9 +10,10 @@ const getTopBusiness = async (req, res, next) => {
         let topBusiness;
 
         [topBusiness] = await connection.query(
-            `SELECT review.idBusiness, name, avg(enviroment) as enviroment, avg(salary) as salary,avg(oportunities) as oportunities, avg(conciliation) as conciliation, avg(enviroment+salary+oportunities+conciliation)/4 AS votes 
+            `SELECT users.avatar, review.idBusiness, business.name, avg(enviroment) as enviroment, avg(salary) as salary,avg(oportunities) as oportunities, avg(conciliation) as conciliation, avg(enviroment+salary+oportunities+conciliation)/4 AS votes 
 FROM review
 LEFT JOIN business ON (review.idBusiness = business.id )
+LEFT JOIN users ON (business.idUser = users.id)
 GROUP BY review.idBusiness
 ORDER BY votes desc
 limit 10`

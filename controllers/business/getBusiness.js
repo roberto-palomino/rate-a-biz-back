@@ -38,8 +38,8 @@ const getBusiness = async (req, res, next) => {
             userInfo.createdAt = users[0].createdAt;
         }
 
-        res.send({
-            status: 'ok',
+        res.status(200).send({
+            status: 'jaja',
             data: {
                 user: userInfo,
             },
