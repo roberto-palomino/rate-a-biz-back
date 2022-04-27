@@ -10,8 +10,8 @@ const newReview = async (req, res, next) => {
     try {
         connection = await getDB();
 
-        // Validamos las propiedades del body.
-        await validate(newReviewSchema, req.body);
+        /*  // Validamos las propiedades del body.
+        await validate(newReviewSchema, req.body); */
 
         // Obtenemos las propiedades del body.
         const {
@@ -35,22 +35,23 @@ const newReview = async (req, res, next) => {
         const { idBusiness } = req.params;
 
         const [identifier] = await connection.query(
-            `SELECT id FROM Business_states WHERE idBusiness = ? and idStates = ?`,
+            `SELECT id FROM business_states WHERE idBusiness = ? and idStates = ?`,
             [idBusiness, idStates]
         );
 
         if (identifier.length > 0) {
             // Creamos la entrada y obtenemos el valor que retorna "connection.query".
             const [newReview] = await connection.query(
-                `INSERT INTO review (idBusiness_states, idUser, idJobs, idSalaries, start_year,
+                `INSERT INTO review (idBusiness, idBusiness_states, idUser, idJobs, idSalaries, start_year,
                             end_year,
                             salary,
                             enviroment,
                             conciliation,
                             oportunities,
                             title,
-                            description, createdAt) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+                            description, createdAt) VALUES (?,?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
                 [
+                    idBusiness,
                     identifier[0].id,
                     idReqUser,
                     idJobs,
@@ -72,11 +73,11 @@ const newReview = async (req, res, next) => {
                 [idBusiness, idStates, new Date()]
             );
             const [newIdBusiness] = await connection.query(
-                `SELECT id FROM Business_states WHERE idBusiness = ? and idStates = ?`,
+                `SELECT id FROM business_states WHERE idBusiness = ? and idStates = ?`,
                 [idBusiness, idStates]
             );
             await connection.query(
-                `INSERT INTO review (idBusiness_states, idUser, idJobs, idSalaries, start_year,
+                `INSERT INTO review (idBusiness, idBusiness_states, idUser, idJobs, idSalaries, start_year,
                             end_year,
                             salary,
                             enviroment,
@@ -85,6 +86,7 @@ const newReview = async (req, res, next) => {
                             title,
                             description, createdAt) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
                 [
+                    idBusiness,
                     newIdBusiness[0].id,
                     idReqUser,
                     idJobs,
