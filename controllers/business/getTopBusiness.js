@@ -29,11 +29,12 @@ limit 10`
         /* Obtenemos las reviews que coincidan con los IDs del top de empresas */
         const [reviews] = await connection.query(
             `
-        SELECT *, review.description, review.id,review.idBusiness, idStates, business.idUser, states.nameStates, (avg(enviroment)+ avg(salary)+ avg(oportunities)+ avg(conciliation))/4 as votes 
+        SELECT *,users.username, review.description, review.id, review.idBusiness, idStates, business.idUser, states.nameStates, (avg(enviroment)+ avg(salary)+ avg(oportunities)+ avg(conciliation))/4 as votes 
 FROM review
 LEFT JOIN business_states ON (idBusiness_states = business_states.id)
 LEFT JOIN business ON (review.idBusiness = business.id )
 LEFT JOIN states ON (idStates = states.id)
+LEFT JOIN users ON (review.idUser = users.id)
 WHERE review.idBusiness in (?)
 GROUP BY review.id
                 ORDER BY review.id   desc         `,
