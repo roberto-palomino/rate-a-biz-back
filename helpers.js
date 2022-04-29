@@ -39,7 +39,7 @@ async function sendMail({ to, subject, body }) {
                      <div>
                         <h1>${subject}</h1>
                         <p>${body}</p>
-                        <a href="https://imgbb.com/"><img src="https://i.ibb.co/cJP2SGB/logo-Grande.png" alt="logo-Grande" border="0"></a>
+                        <a href="https://imgbb.com/"><img src="https://i.ibb.co/2c0F3kX/Logo-Grande.png" alt="Logo-Grande" border="0"></a>
                     </div> 
             `,
         };
