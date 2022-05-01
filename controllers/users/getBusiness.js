@@ -9,8 +9,8 @@ const getBusiness = async (req, res, next) => {
         // Obtenemos el id del usuario del que queremos obtener la info.
         const { idUser } = req.params;
 
-        // Obtenemos el id del usuario que realiza la request.
-        /* const idReqUser = req.userAuth.id; */
+        /* Obtenemos los query params de las empresas que se seleccionarán */
+        const { orderBy, direction } = req.body;
 
         // Obtenemos todos los datos que me interesan de la empresa de la cuál
         // se solicita información.
@@ -23,7 +23,10 @@ const getBusiness = async (req, res, next) => {
         /* Obtenemos todas reviews de la empresa */
 
         const [businessReviews] = await connection.query(
-            `SELECT * FROM review WHERE idBusiness = ?`,
+            `SELECT *, avatar, username FROM review 
+            LEFT JOIN users on (review.idUser = users.id)
+            WHERE idBusiness = ?
+            ${orderBy ? `ORDER BY ${orderBy} ${direction} ` : ''}`,
             [business[0].id]
         );
 

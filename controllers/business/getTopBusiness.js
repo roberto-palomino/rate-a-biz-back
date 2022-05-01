@@ -10,7 +10,7 @@ const getTopBusiness = async (req, res, next) => {
         let topBusiness;
 
         [topBusiness] = await connection.query(
-            `SELECT users.avatar, review.idBusiness, business.name, avg(enviroment) as enviroment, avg(salary) as salary,avg(oportunities) as oportunities, avg(conciliation) as conciliation, avg(enviroment+salary+oportunities+conciliation)/4 AS votes 
+            `SELECT COUNT(review.idBusiness) as total, users.avatar,users.id, review.idBusiness, business.name, avg(enviroment) as enviroment, avg(salary) as salary,avg(oportunities) as oportunities, avg(conciliation) as conciliation, avg(enviroment+salary+oportunities+conciliation)/4 AS votes 
 FROM review
 LEFT JOIN business ON (review.idBusiness = business.id )
 LEFT JOIN users ON (business.idUser = users.id)
@@ -29,11 +29,12 @@ limit 10`
         /* Obtenemos las reviews que coincidan con los IDs del top de empresas */
         const [reviews] = await connection.query(
             `
-        SELECT *, review.description, review.id,review.idBusiness, idStates, business.idUser, states.nameStates, (avg(enviroment)+ avg(salary)+ avg(oportunities)+ avg(conciliation))/4 as votes 
+        SELECT *,users.username, review.description, review.id, review.idBusiness, idStates, business.idUser, states.nameStates, (avg(enviroment)+ avg(salary)+ avg(oportunities)+ avg(conciliation))/4 as votes 
 FROM review
 LEFT JOIN business_states ON (idBusiness_states = business_states.id)
 LEFT JOIN business ON (review.idBusiness = business.id )
 LEFT JOIN states ON (idStates = states.id)
+LEFT JOIN users ON (review.idUser = users.id)
 WHERE review.idBusiness in (?)
 GROUP BY review.id
                 ORDER BY review.id   desc         `,
