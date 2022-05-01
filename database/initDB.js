@@ -184,7 +184,7 @@ async function initDB() {
         ];
         for (const state of states) {
             await connection.query(
-                `INSERT INTO states (nameState, createdAt) VALUES (?, ?)`,
+                `INSERT INTO states (nameStates, createdAt) VALUES (?, ?)`,
                 [state, new Date()]
             );
         }
