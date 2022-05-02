@@ -138,7 +138,7 @@ app.put(
 );
 
 // Obtener información de una empresa.
-app.get('/business/:idUser', getBusiness);
+app.post('/business/:idUser', getBusiness);
 
 // Editar el name, url_web de una empresa.
 app.put('/business/:idUser', userIsAuth, userExists, canEditUser, editBusiness);

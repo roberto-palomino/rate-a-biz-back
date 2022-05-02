@@ -7,7 +7,8 @@ const searchBusiness = async (req, res, next) => {
         connection = await getDB();
 
         /* Obtenemos los query params de las empresas que se seleccionarán */
-        const { idSalaries, idJobs, idStates, orderBy, direction } = req.body;
+        const { idSalaries, idJobs, idStates, orderBy, direction, name } =
+            req.body;
 
         /* posibles valores para "order" */
         const validOrderOptions = [
@@ -32,37 +33,47 @@ const searchBusiness = async (req, res, next) => {
             ? direction
             : 'desc';
 
+        /* Variable donde almacenamos las empresas si existe alguna review con ese nombre*/
+        let businessName;
+
+        /* Query que busca si hay reviews con ese nombre */
+
+        [businessName] = await connection.query(
+            `SELECT idBusiness FROM review
+            LEFT JOIN  business ON (review.idBusiness = business.id)
+            WHERE business.name LIKE ?`,
+            [name]
+        );
+
         /* Variable donde almacenamos las empresas */
         let business;
 
-        /* Variable donde almacenamos el top de empresas */
-
-        /* 
-        [topBusiness] = await connection.query(
-            `SELECT idBusiness, avg(enviroment), avg(salary),avg(oportunities), avg(conciliation), avg(enviroment+salary+oportunities+conciliation)/4 AS votes 
-FROM review
-GROUP BY idBusiness
-ORDER BY votes desc
-limit 2`
-        ); */
-
-        /* Si existe algún párametro de filtrado */
-        if (idSalaries | idJobs | idStates | orderBy | direction) {
-            let idBusiness_states;
-
-            [idBusiness_states] = await connection.query(
-                `SELECT id FROM business_states
-                WHERE idStates LIKE ?`,
-                [idStates]
+        /* Si no hay reviews con ese nombre, obtenemos toda la información de la empresa */
+        let businessNo;
+        if (businessName.length === 0) {
+            [businessNo] = await connection.query(
+                `SELECT * FROM business
+                LEFT JOIN users ON (business.idUser = users.id)
+                WHERE business.name LIKE ?`,
+                [name]
             );
-            let ids = [];
 
-            ids = idBusiness_states.map((id) => [...ids, id.id]);
-            console.log('orderBy en back', orderBy);
-            console.log('order en back', orderDirection);
+            /* Si existe algún párametro de filtrado */
+        }
 
-            [business] = await connection.query(
-                `SELECT *, users.avatar, states.nameStates, business.idUser, jobs.name as job, business.name, review.description, salary_range FROM review  
+        let idBusiness_states;
+
+        [idBusiness_states] = await connection.query(
+            `SELECT id FROM business_states
+                WHERE idStates LIKE ?`,
+            [idStates]
+        );
+        let ids = [];
+
+        ids = idBusiness_states.map((id) => [...ids, id.id]);
+
+        [business] = await connection.query(
+            `SELECT *, users.avatar, states.nameStates, business.idUser, jobs.name as job, business.name, review.description, salary_range FROM review  
                  LEFT JOIN business_states ON (idBusiness_states = business_states.id)
                  LEFT JOIN business ON (review.idBusiness = business.id )
                  LEFT JOIN states ON (business_states.idStates = states.id)
@@ -70,15 +81,16 @@ limit 2`
                  LEFT JOIN salaries_range ON (review.idSalaries = salaries_range.id)
                  LEFT JOIN users ON (business.idUser = users.id)
                  WHERE -1=-1 ${idJobs ? `AND idJobs IN (${idJobs})  ` : ''}${
-                    idStates ? `AND idBusiness_states IN (${ids})` : ''
-                }${idSalaries ? ` AND idSalaries IN (${idSalaries})` : ''}
+                idStates ? `AND idBusiness_states IN (${ids})` : ''
+            }${idSalaries ? ` AND idSalaries IN (${idSalaries})` : ''} ${
+                name ? `AND business.name LIKE ("${name}")` : ''
+            }
                  GROUP BY review.id
                 ORDER BY ${order} ${orderDirection}
                
                 `
-            );
-            console.log(business);
-        } else {
+        );
+        /* else {
             [business] = await connection.query(
                 `SELECT *,business.name, users.avatar,review.id, review.description, idStates, business.idUser, states.nameStates FROM review  
                  LEFT JOIN business_states ON (idBusiness_states = business_states.id)
@@ -90,12 +102,18 @@ limit 2`
                 LIMIT 15
                 `
             );
+        } */
+        if (business.length > 0) {
+            res.send({
+                status: 'ok',
+                data: { business },
+            });
+        } else {
+            res.send({
+                status: 'ok',
+                data: { business, businessNo },
+            });
         }
-
-        res.send({
-            status: 'ok',
-            data: { business },
-        });
     } catch (error) {
         next(error);
     } finally {
