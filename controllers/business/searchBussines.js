@@ -70,10 +70,19 @@ const searchBusiness = async (req, res, next) => {
         );
         let ids = [];
 
-        ids = idBusiness_states.map((id) => [...ids, id.id]);
-
-        [business] = await connection.query(
-            `SELECT *, users.avatar, states.nameStates, business.idUser, jobs.name as job, business.name, review.description, salary_range FROM review  
+        ids = idBusiness_states.map((idBusiness_states) => {
+            return idBusiness_states.id;
+        });
+        console.log(
+            'name | idJobs | idSalaries | ids >>>>',
+            name,
+            idJobs,
+            idSalaries,
+            ids
+        );
+        if (name || idJobs || idSalaries || ids.length > 0) {
+            console.log('ids>>>>>', ids);
+            const strQuery = `SELECT *, users.avatar, states.nameStates, business.idUser, jobs.name as job, business.name, review.description, salary_range FROM review  
                  LEFT JOIN business_states ON (idBusiness_states = business_states.id)
                  LEFT JOIN business ON (review.idBusiness = business.id )
                  LEFT JOIN states ON (business_states.idStates = states.id)
@@ -81,15 +90,18 @@ const searchBusiness = async (req, res, next) => {
                  LEFT JOIN salaries_range ON (review.idSalaries = salaries_range.id)
                  LEFT JOIN users ON (business.idUser = users.id)
                  WHERE -1=-1 ${idJobs ? `AND idJobs IN (${idJobs})  ` : ''}${
-                idStates ? `AND idBusiness_states IN (${ids})` : ''
+                ids.length > 0 ? `AND idBusiness_states IN (${ids})` : ''
             }${idSalaries ? ` AND idSalaries IN (${idSalaries})` : ''} ${
                 name ? `AND business.name LIKE ("${name}")` : ''
             }
-                 GROUP BY review.id
+                 
                 ORDER BY ${order} ${orderDirection}
                
-                `
-        );
+                `;
+            console.log('strQuery>>>', strQuery);
+            business = await connection.query(strQuery);
+        }
+
         /* else {
             [business] = await connection.query(
                 `SELECT *,business.name, users.avatar,review.id, review.description, idStates, business.idUser, states.nameStates FROM review  
@@ -103,6 +115,8 @@ const searchBusiness = async (req, res, next) => {
                 `
             );
         } */
+        business = business[0];
+
         if (business.length > 0) {
             res.send({
                 status: 'ok',
