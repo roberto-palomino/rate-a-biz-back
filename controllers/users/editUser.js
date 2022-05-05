@@ -50,6 +50,17 @@ const editUser = async (req, res, next) => {
         // si lo está se lanza mensaje de error:
 
         if (username && username !== users[0].username) {
+            const [userUsername] = await connection.query(
+                `SELECT id FROM users WHERE username = ?`,
+                [username]
+            );
+
+            if (userUsername.length > 0) {
+                const error = new Error('Ya existe un usuario con ese nombre');
+                error.httpStatus = 409;
+                throw error;
+            }
+
             await connection.query(
                 `UPDATE users SET username = ?, modifiedAt = ? WHERE id = ?`,
                 [username, new Date(), idUser]

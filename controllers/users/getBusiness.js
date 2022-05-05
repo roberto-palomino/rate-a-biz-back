@@ -54,6 +54,9 @@ const getBusiness = async (req, res, next) => {
         const userInfo = {
             username: users[0].username,
             avatar: users[0].avatar,
+            email: users[0].email,
+            role: users[0].role,
+            createdAt: users[0].createdAt,
         };
 
         // Si el usuario que realiza la request es el dueño de dicho usuario/empresa o si es
