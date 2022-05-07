@@ -1,7 +1,7 @@
 const bcrypt = require('bcrypt');
 const { generateRandomString, sendMail } = require('../../helpers');
 const getDb = require('../../database/getDB');
-const { PUBLIC_HOST } = process.env;
+const { PUBLIC_HOST_FRONT } = process.env;
 
 const signUp = async (req, res, next) => {
     let connection;
@@ -47,7 +47,7 @@ const signUp = async (req, res, next) => {
 
         const emailBody = `
       Te acabas de registrar en Rate a Biz.
-      Pulsa este link para verificar tu cuenta: ${PUBLIC_HOST}/validate/${registrationCode}
+      Pulsa este link para verificar tu cuenta: ${PUBLIC_HOST_FRONT}/validate/${registrationCode}
     `;
         /* Enviamos el mail */
         await sendMail({
