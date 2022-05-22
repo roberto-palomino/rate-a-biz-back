@@ -215,6 +215,55 @@ async function initDB() {
                 [sector, new Date()]
             );
         }
+
+        const salaries_range = [
+            '< 15.000',
+            '15.000 - 20.000',
+            '20.000 - 25.000',
+            '25.000 - 30.000',
+            '30.000 - 35.000',
+            '35.000 - 40.000',
+            '40.000 - 45.000',
+            '45.000 - 50.000',
+            '50.000 - 60.000',
+            '> 60.000',
+        ];
+        for (const salary_range of salaries_range) {
+            await connection.query(
+                `INSERT INTO salaries_range (salary_range, createdAt) VALUES (?, ?)`,
+                [salary_range, new Date()]
+            );
+        }
+
+        const jobs = [
+            'Administrativo',
+            'Operario',
+            'Mozo de almacén',
+            'Comercial',
+            'Gerente',
+            'CEO',
+            'CFO',
+            'Contable',
+            'Camarero',
+            'Cocinero',
+            'Asistente ventas',
+            'Conductor',
+            'Seguridad',
+            'RRHH',
+            'Marketing',
+            'Doctor',
+            'Enfermero',
+            'Gestor contenido',
+            'Desarrollador',
+            'Mantenimiento',
+            'Abogado',
+        ];
+        for (const job of jobs) {
+            await connection.query(
+                `INSERT INTO jobs (name, createdAt) VALUES (?, ?)`,
+                [job, new Date()]
+            );
+        }
     } catch (err) {
         console.error(err);
     } finally {
