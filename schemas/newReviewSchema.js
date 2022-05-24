@@ -37,7 +37,7 @@ const newReviewSchema = Joi.object().keys({
                     );
             }
         }),
-    idStates: Joi.string()
+    idStates: Joi.number()
         .required()
         .error((errors) => {
             switch (errors[0].code) {
@@ -46,11 +46,11 @@ const newReviewSchema = Joi.object().keys({
 
                 default:
                     return new Error(
-                        'Debe seleccionar un [idStates] de entre las opciones'
+                        'Debe seleccionar una Provincia de entre las opciones'
                     );
             }
         }),
-    idJobs: Joi.string()
+    idJobs: Joi.number()
         .required()
         .error((errors) => {
             switch (errors[0].code) {
@@ -59,11 +59,11 @@ const newReviewSchema = Joi.object().keys({
 
                 default:
                     return new Error(
-                        'Debe seleccionar un [idJobs] de entre las opciones'
+                        'Debe seleccionar un Trabajo de entre las opciones'
                     );
             }
         }),
-    idSalaries: Joi.string()
+    idSalaries: Joi.number()
         .required()
         .error((errors) => {
             switch (errors[0].code) {
@@ -72,11 +72,11 @@ const newReviewSchema = Joi.object().keys({
 
                 default:
                     return new Error(
-                        'Debe seleccionar un [idSalaries] de entre las opciones'
+                        'Debe seleccionar un Rango salarial de entre las opciones'
                     );
             }
         }),
-    start_year: Joi.string()
+    start_year: Joi.number()
         .required()
         .error((errors) => {
             switch (errors[0].code) {
@@ -85,11 +85,11 @@ const newReviewSchema = Joi.object().keys({
 
                 default:
                     return new Error(
-                        'Debe seleccionar un [start_year] de entre las opciones'
+                        'Debe seleccionar un Año de comienzo de entre las opciones'
                     );
             }
         }),
-    end_year: Joi.string()
+    end_year: Joi.number()
         .required()
         .error((errors) => {
             switch (errors[0].code) {
@@ -98,26 +98,11 @@ const newReviewSchema = Joi.object().keys({
 
                 default:
                     return new Error(
-                        'Debe seleccionar un [end_year] de entre las opciones'
+                        'Debe seleccionar un Año fin de entre las opciones'
                     );
             }
         }),
-    salary: Joi.string()
-        .required()
-        .min(1)
-        .max(5)
-        .error((errors) => {
-            switch (errors[0].code) {
-                case 'any.required':
-                    return new Error('La propiedad [salary] es requerida');
-
-                default:
-                    return new Error(
-                        'La propiedad [salary] debe tener un valor entre 1 y 5'
-                    );
-            }
-        }),
-    enviroment: Joi.string()
+    enviroment: Joi.number()
         .required()
         .min(1)
         .max(5)
@@ -128,11 +113,11 @@ const newReviewSchema = Joi.object().keys({
 
                 default:
                     return new Error(
-                        'La propiedad [enviroment] debe tener un valor entre 1 y 5'
+                        'La propiedad ambiente laboral debe tener un valor entre 1 y 5'
                     );
             }
         }),
-    conciliation: Joi.string()
+    conciliation: Joi.number()
         .required()
         .min(1)
         .max(5)
@@ -145,11 +130,11 @@ const newReviewSchema = Joi.object().keys({
 
                 default:
                     return new Error(
-                        'La propiedad [conciliation] debe tener un valor entre 1 y 5'
+                        'La propiedad conciliación debe tener un valor entre 1 y 5'
                     );
             }
         }),
-    oportunities: Joi.string()
+    oportunities: Joi.number()
         .required()
         .min(1)
         .max(5)
@@ -162,7 +147,22 @@ const newReviewSchema = Joi.object().keys({
 
                 default:
                     return new Error(
-                        'La propiedad [oportunities] debe tener un valor entre 1 y 5'
+                        'La propiedad oportunidades debe tener un valor entre 1 y 5'
+                    );
+            }
+        }),
+    salary: Joi.number()
+        .required()
+        .min(1)
+        .max(5)
+        .error((errors) => {
+            switch (errors[0].code) {
+                case 'any.required':
+                    return new Error('La propiedad [salary] es requerida');
+
+                default:
+                    return new Error(
+                        'La propiedad salario debe tener un valor entre 1 y 5'
                     );
             }
         }),
