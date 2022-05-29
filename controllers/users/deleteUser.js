@@ -14,15 +14,6 @@ const deleteUser = async (req, res, next) => {
 
         const { idUser } = req.params;
 
-        // Mensaje de error si el usuario es administrador con id=1
-        /*   if (Number(idUser) === 1) {
-            const error = new Error(
-                'El administrador principal no puede ser eliminado'
-            );
-            error.httpStatus = 403;
-            throw error;
-        } */
-
         // Obtenemos el avatar del usuario y si lo tiene se borra:
         const [users] = await connection.query(
             `SELECT avatar FROM users WHERE id = ?`,
@@ -33,7 +24,6 @@ const deleteUser = async (req, res, next) => {
         }
 
         // Anonimizamos el usuario:
-
         await connection.query(
             `
             UPDATE users

@@ -12,12 +12,6 @@ const editUser = async (req, res, next) => {
         // Campos del body que solicitamos y mensaje de error si falta algún campo:
         const { username, newEmail, name, lastname } = req.body;
 
-        // if (!username && !newEmail) {
-        //     const error = new Error('Faltan campos');
-        //     error.httpStatus = 400;
-        //     throw error;
-        // }
-
         // Pedimos email y username del usuario:
         const [users] = await connection.query(
             `SELECT email, username FROM users WHERE id = ?`,

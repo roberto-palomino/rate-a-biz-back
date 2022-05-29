@@ -20,19 +20,6 @@ const editBusiness = async (req, res, next) => {
             sector,
         } = req.body;
 
-        // if (
-        //     !username &&
-        //     !newEmail &&
-        //     !name &&
-        //     !headquarter &&
-        //     !url_web &&
-        //     !sector
-        // ) {
-        //     const error = new Error('Faltan campos');
-        //     error.httpStatus = 400;
-        //     throw error;
-        // }
-
         // Pedimos email y username del usuario:
         const [users] = await connection.query(
             `SELECT email, username FROM users WHERE id = ?`,
