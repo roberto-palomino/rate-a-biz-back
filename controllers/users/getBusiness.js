@@ -23,8 +23,10 @@ const getBusiness = async (req, res, next) => {
         /* Obtenemos todas reviews de la empresa */
 
         const [businessReviews] = await connection.query(
-            `SELECT *, avatar, username FROM review 
+            `SELECT *, avatar, username, jobs.name as job, salary_range FROM review 
             LEFT JOIN users on (review.idUser = users.id)
+             LEFT JOIN jobs ON (review.idJobs = jobs.id)
+             LEFT JOIN salaries_range ON (review.idSalaries = salaries_range.id)
             WHERE idBusiness = ?
             ${orderBy ? `ORDER BY ${orderBy} ${direction} ` : ''}`,
             [business[0].id]
