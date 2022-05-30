@@ -37,7 +37,7 @@ const newReviewSchema = Joi.object().keys({
                     );
             }
         }),
-    idStates: Joi.string()
+    idStates: Joi.number()
         .required()
         .error((errors) => {
             switch (errors[0].code) {
@@ -50,7 +50,7 @@ const newReviewSchema = Joi.object().keys({
                     );
             }
         }),
-    idJobs: Joi.string()
+    idJobs: Joi.number()
         .required()
         .error((errors) => {
             switch (errors[0].code) {
@@ -63,7 +63,7 @@ const newReviewSchema = Joi.object().keys({
                     );
             }
         }),
-    idSalaries: Joi.string()
+    idSalaries: Joi.number()
         .required()
         .error((errors) => {
             switch (errors[0].code) {
@@ -76,7 +76,7 @@ const newReviewSchema = Joi.object().keys({
                     );
             }
         }),
-    start_year: Joi.string()
+    start_year: Joi.number()
         .required()
         .error((errors) => {
             switch (errors[0].code) {
@@ -89,7 +89,7 @@ const newReviewSchema = Joi.object().keys({
                     );
             }
         }),
-    end_year: Joi.string()
+    end_year: Joi.number()
         .required()
         .error((errors) => {
             switch (errors[0].code) {
@@ -102,7 +102,7 @@ const newReviewSchema = Joi.object().keys({
                     );
             }
         }),
-    salary: Joi.string()
+    salary: Joi.number()
         .required()
         .min(1)
         .max(5)
@@ -117,7 +117,7 @@ const newReviewSchema = Joi.object().keys({
                     );
             }
         }),
-    enviroment: Joi.string()
+    enviroment: Joi.number()
         .required()
         .min(1)
         .max(5)
@@ -132,7 +132,7 @@ const newReviewSchema = Joi.object().keys({
                     );
             }
         }),
-    conciliation: Joi.string()
+    conciliation: Joi.number()
         .required()
         .min(1)
         .max(5)
@@ -149,7 +149,7 @@ const newReviewSchema = Joi.object().keys({
                     );
             }
         }),
-    oportunities: Joi.string()
+    oportunities: Joi.number()
         .required()
         .min(1)
         .max(5)

@@ -32,40 +32,36 @@ const searchBusiness = async (req, res, next) => {
         const orderDirection = validDirectionOptions.includes(direction)
             ? direction
             : 'desc';
-
-        /* Variable donde almacenamos las empresas si existe alguna review con ese nombre*/
-        let businessName;
-
-        /* Query que busca si hay reviews con ese nombre */
-
-        [businessName] = await connection.query(
-            `SELECT idBusiness FROM review
+        /* Variable para almacenar la información de la empresa en caso de que no tenga reviews */
+        let businessNoReviews;
+        if (name) {
+            /* Buscamos si hay reviews con ese nombre */
+            let [businessName] = await connection.query(
+                `SELECT idBusiness FROM review
             LEFT JOIN  business ON (review.idBusiness = business.id)
             WHERE business.name LIKE ?`,
-            [name]
-        );
-
-        /* Variable donde almacenamos las empresas */
-        let business;
-
-        /* Si no hay reviews con ese nombre, obtenemos toda la información de la empresa */
-        let businessNo;
-        if (businessName.length === 0) {
-            [businessNo] = await connection.query(
-                `SELECT * FROM business
+                [`%${name}%`]
+            );
+            console.log('businessName', businessName);
+            /* En caso de que no haya reviews, guardamos la info */
+            if (businessName.length === 0) {
+                [businessNoReviews] = await connection.query(
+                    `SELECT *, business.name FROM business
                 LEFT JOIN users ON (business.idUser = users.id)
                 WHERE business.name LIKE ?`,
-                [name]
-            );
-
-            /* Si existe algún párametro de filtrado */
+                    [`%${name}%`]
+                );
+            }
+            console.log(businessNoReviews);
         }
+        /* Si existe algún párametro de filtrado */
 
+        /* Almacenamos los idStates para obteners los ids de las empresas que coincidan con ese idStates */
         let idBusiness_states;
 
         [idBusiness_states] = await connection.query(
             `SELECT id FROM business_states
-                WHERE idStates LIKE ?`,
+            WHERE idStates LIKE ?`,
             [idStates]
         );
         let ids = [];
@@ -73,16 +69,12 @@ const searchBusiness = async (req, res, next) => {
         ids = idBusiness_states.map((idBusiness_states) => {
             return idBusiness_states.id;
         });
-        console.log(
-            'name | idJobs | idSalaries | ids >>>>',
-            name,
-            idJobs,
-            idSalaries,
-            ids
-        );
+        /* Variable para almacenar las reviews */
+
+        let business;
         if (name || idJobs || idSalaries || ids.length > 0) {
-            console.log('ids>>>>>', ids);
-            const strQuery = `SELECT *, users.avatar, states.nameStates, business.idUser, jobs.name as job, business.name, review.description, salary_range FROM review  
+            [business] = await connection.query(
+                `SELECT *, users.avatar, states.nameStates, business.idUser, jobs.name as job, business.name, review.description, salary_range FROM review  
                  LEFT JOIN business_states ON (idBusiness_states = business_states.id)
                  LEFT JOIN business ON (review.idBusiness = business.id )
                  LEFT JOIN states ON (business_states.idStates = states.id)
@@ -90,16 +82,16 @@ const searchBusiness = async (req, res, next) => {
                  LEFT JOIN salaries_range ON (review.idSalaries = salaries_range.id)
                  LEFT JOIN users ON (business.idUser = users.id)
                  WHERE -1=-1 ${idJobs ? `AND idJobs IN (${idJobs})  ` : ''}${
-                ids.length > 0 ? `AND idBusiness_states IN (${ids})` : ''
-            }${idSalaries ? ` AND idSalaries IN (${idSalaries})` : ''} ${
-                name ? `AND business.name LIKE ("${name}")` : ''
-            }
+                    ids.length > 0 ? `AND idBusiness_states IN (${ids})` : ''
+                }${idSalaries ? ` AND idSalaries IN (${idSalaries})` : ''} ${
+                    name ? `AND business.name LIKE ? ` : ''
+                }
                  
                 ORDER BY ${order} ${orderDirection}
                
-                `;
-            console.log('strQuery>>>', strQuery);
-            business = await connection.query(strQuery);
+                `,
+                [`%${name}%`]
+            );
         }
 
         /* else {
@@ -115,17 +107,30 @@ const searchBusiness = async (req, res, next) => {
                 `
             );
         } */
-        business = business[0];
 
-        if (business.length > 0) {
-            res.send({
-                status: 'ok',
-                data: { business },
-            });
+        /* Si hay reviews, enviamos la reviews */
+        if (business) {
+            if (business.length > 0) {
+                res.send({
+                    status: 'ok',
+                    data: { business },
+                });
+                /* Si no hay reviews, enviamos la query con la información de esa empresa */
+            } else if (businessNoReviews.length > 0) {
+                res.send({
+                    status: 'ok',
+                    data: { business: businessNoReviews },
+                });
+            } else {
+                res.send({
+                    status: 'ok',
+                    data: { business: 'no matches' },
+                });
+            }
         } else {
             res.send({
                 status: 'ok',
-                data: { business, businessNo },
+                data: { business: 'no matches' },
             });
         }
     } catch (error) {
