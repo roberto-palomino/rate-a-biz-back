@@ -32,11 +32,16 @@ const newReview = async (req, res, next) => {
         const idReqUser = req.userAuth.id;
 
         //obtenemos el id de business.
-        const { idBusiness } = req.params;
-
+        const { idBusiness: idUser } = req.params;
+        console.log('idUser', idUser);
+        const [idBusiness] = await connection.query(
+            `SELECT id FROM business WHERE idUser = ?`,
+            [idUser]
+        );
+        console.log('idbusines', idBusiness[0].id);
         const [identifier] = await connection.query(
             `SELECT id FROM business_states WHERE idBusiness = ? and idStates = ?`,
-            [idBusiness, idStates]
+            [idBusiness[0].id, idStates]
         );
 
         if (identifier.length > 0) {
@@ -51,7 +56,7 @@ const newReview = async (req, res, next) => {
                             title,
                             description, createdAt) VALUES (?,?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
                 [
-                    idBusiness,
+                    idBusiness[0].id,
                     identifier[0].id,
                     idReqUser,
                     idJobs,
@@ -70,11 +75,11 @@ const newReview = async (req, res, next) => {
         } else {
             await connection.query(
                 `INSERT INTO business_states (idBusiness, idStates, createdAt) VALUES (?, ?, ?)`,
-                [idBusiness, idStates, new Date()]
+                [idBusiness[0].id, idStates, new Date()]
             );
             const [newIdBusiness] = await connection.query(
                 `SELECT id FROM business_states WHERE idBusiness = ? and idStates = ?`,
-                [idBusiness, idStates]
+                [idBusiness[0].id, idStates]
             );
             await connection.query(
                 `INSERT INTO review (idBusiness, idBusiness_states, idUser, idJobs, idSalaries, start_year,
@@ -84,9 +89,9 @@ const newReview = async (req, res, next) => {
                             conciliation,
                             oportunities,
                             title,
-                            description, createdAt) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+                            description, createdAt) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?)`,
                 [
-                    idBusiness,
+                    idBusiness[0].id,
                     newIdBusiness[0].id,
                     idReqUser,
                     idJobs,
