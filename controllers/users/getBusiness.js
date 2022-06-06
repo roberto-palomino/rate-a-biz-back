@@ -61,22 +61,6 @@ const getBusiness = async (req, res, next) => {
             createdAt: users[0].createdAt,
         };
 
-        // Si el usuario que realiza la request es el dueño de dicho usuario/empresa o si es
-        // un administrador vamos a agregar información extra.
-
-        /* if (users[0].id === idReqUser || req.userAuth.role === 'admin') {
-            userInfo.email = users[0].email;
-            userInfo.role = users[0].role;
-            userInfo.createdAt = users[0].createdAt;
-
-            res.send({
-                status: 'ok',
-                data: {
-                    businessInfo: businessInfo,
-                    userInfo: userInfo,
-                },
-            });
-        } else { */
         res.send({
             status: 'ok',
             data: {
