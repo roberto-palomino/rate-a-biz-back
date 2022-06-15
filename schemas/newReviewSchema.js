@@ -1,7 +1,5 @@
 const Joi = require('joi');
 
-// Pendiente de hacer comprobaciones para idStates, idJobs, idSalaries, start_year, end_year, salary, enviroment, conciliation, oportunities
-
 const newReviewSchema = Joi.object().keys({
     title: Joi.string()
         .required()
@@ -11,14 +9,14 @@ const newReviewSchema = Joi.object().keys({
         .error((errors) => {
             console.log(errors[0].code);
             if (errors[0].code === 'any.required') {
-                return new Error('La propiedad [title] es requerida');
+                return new Error('La propiedad titulo es requerida');
             } else if (errors[0].code === 'string.pattern.base') {
                 return new Error(
-                    'La propiedad [title] solo puede contener letras o números'
+                    'La propiedad titulo solo puede contener letras o números'
                 );
             } else {
                 return new Error(
-                    'La propiedad [title] debe tener entre 3 y 50 caracteres'
+                    'La propiedad titulo debe tener entre 3 y 50 caracteres'
                 );
             }
         }),
@@ -29,11 +27,11 @@ const newReviewSchema = Joi.object().keys({
         .error((errors) => {
             switch (errors[0].code) {
                 case 'any.required':
-                    return new Error('La propiedad [description] es requerida');
+                    return new Error('La propiedad descripción es requerida');
 
                 default:
                     return new Error(
-                        'La propiedad [description] debe tener entre 20 y 500 caracteres'
+                        'La propiedad descripción debe tener entre 20 y 500 caracteres'
                     );
             }
         }),
@@ -46,7 +44,7 @@ const newReviewSchema = Joi.object().keys({
 
                 default:
                     return new Error(
-                        'Debe seleccionar un [idStates] de entre las opciones'
+                        'Debe seleccionar una Provincia de entre las opciones'
                     );
             }
         }),
@@ -55,11 +53,11 @@ const newReviewSchema = Joi.object().keys({
         .error((errors) => {
             switch (errors[0].code) {
                 case 'any.required':
-                    return new Error('La propiedad [idJobs] es requerida');
+                    return new Error('La propiedad trabajo es requerida');
 
                 default:
                     return new Error(
-                        'Debe seleccionar un [idJobs] de entre las opciones'
+                        'Debe seleccionar un Trabajo de entre las opciones'
                     );
             }
         }),
@@ -72,7 +70,7 @@ const newReviewSchema = Joi.object().keys({
 
                 default:
                     return new Error(
-                        'Debe seleccionar un [idSalaries] de entre las opciones'
+                        'Debe seleccionar un Rango salarial de entre las opciones'
                     );
             }
         }),
@@ -85,7 +83,7 @@ const newReviewSchema = Joi.object().keys({
 
                 default:
                     return new Error(
-                        'Debe seleccionar un [start_year] de entre las opciones'
+                        'Debe seleccionar un Año de comienzo de entre las opciones'
                     );
             }
         }),
@@ -98,22 +96,7 @@ const newReviewSchema = Joi.object().keys({
 
                 default:
                     return new Error(
-                        'Debe seleccionar un [end_year] de entre las opciones'
-                    );
-            }
-        }),
-    salary: Joi.number()
-        .required()
-        .min(1)
-        .max(5)
-        .error((errors) => {
-            switch (errors[0].code) {
-                case 'any.required':
-                    return new Error('La propiedad [salary] es requerida');
-
-                default:
-                    return new Error(
-                        'La propiedad [salary] debe tener un valor entre 1 y 5'
+                        'Debe seleccionar un Año fin de entre las opciones'
                     );
             }
         }),
@@ -128,7 +111,7 @@ const newReviewSchema = Joi.object().keys({
 
                 default:
                     return new Error(
-                        'La propiedad [enviroment] debe tener un valor entre 1 y 5'
+                        'La propiedad ambiente laboral debe tener un valor entre 1 y 5'
                     );
             }
         }),
@@ -145,7 +128,7 @@ const newReviewSchema = Joi.object().keys({
 
                 default:
                     return new Error(
-                        'La propiedad [conciliation] debe tener un valor entre 1 y 5'
+                        'La propiedad conciliación debe tener un valor entre 1 y 5'
                     );
             }
         }),
@@ -162,7 +145,22 @@ const newReviewSchema = Joi.object().keys({
 
                 default:
                     return new Error(
-                        'La propiedad [oportunities] debe tener un valor entre 1 y 5'
+                        'La propiedad oportunidades debe tener un valor entre 1 y 5'
+                    );
+            }
+        }),
+    salary: Joi.number()
+        .required()
+        .min(1)
+        .max(5)
+        .error((errors) => {
+            switch (errors[0].code) {
+                case 'any.required':
+                    return new Error('La propiedad [salary] es requerida');
+
+                default:
+                    return new Error(
+                        'La propiedad salario debe tener un valor entre 1 y 5'
                     );
             }
         }),
