@@ -1,7 +1,5 @@
 const Joi = require('joi');
 
-// Pendiente de hacer comprobaciones para idStates, idJobs, idSalaries, start_year, end_year, salary, enviroment, conciliation, oportunities
-
 const newReviewSchema = Joi.object().keys({
     title: Joi.string()
         .required()

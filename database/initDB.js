@@ -257,6 +257,9 @@ async function initDB() {
             'Desarrollador',
             'Mantenimiento',
             'Abogado',
+            'Limpieza',
+            'Cajero',
+            'Atención al cliente',
         ];
         for (const job of jobs) {
             await connection.query(
