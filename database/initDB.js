@@ -226,7 +226,7 @@ async function initDB() {
             '40.000 - 45.000',
             '45.000 - 50.000',
             '50.000 - 60.000',
-            '> 60.000',
+            '60.000 <',
         ];
         for (const salary_range of salaries_range) {
             await connection.query(
